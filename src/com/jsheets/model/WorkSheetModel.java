@@ -1,23 +1,58 @@
 package com.jsheets.model;
 
-import java.util.stream.IntStream;
-
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-public class WorkSheetModel extends DefaultTableModel {
+import com.jsheets.components.cells.Cell;
+import com.jsheets.components.cells.CellFactory;
+import com.jsheets.util.StringUtil;
+
+public class WorkSheetModel extends AbstractTableModel {
+  private final static int columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length();
+  private final static int rows = 100;
+
+  private final Cell<?>[][] cells;
+
+
   public WorkSheetModel() {
     super();
+    cells = new Cell<?>[rows][columns];
+  }
 
-    final var columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-    final var rows = 100;
 
-    for (var column : columns) {
-      addColumn(column);
+  public Cell<?> getCellAt(int row, int col) {
+    var cell = cells[row][col];
+    if (cell == null) {
+      cell = CellFactory.create("", row, col);
     }
 
-    IntStream
-      .range(0, rows)
-      .mapToObj(i -> new String[columns.length])
-      .forEach(r -> addRow(r));
+    return cell;
+  }
+
+
+  @Override
+  public boolean isCellEditable(int row, int col) {
+    return true;
+  }
+
+  @Override
+  public int getRowCount() {
+    return cells.length;
+  }
+
+  @Override
+  public int getColumnCount() {
+    return cells[0].length;
+  }
+
+  @Override
+  public Object getValueAt(int row, int col) {
+    return getCellAt(row, col).getValue();
+  }
+
+  @Override
+  public void setValueAt(Object value, int row, int col) {
+    final var expression = StringUtil.emptyIfNull(value);
+    cells[row][col] = CellFactory.create(expression, row, col);
   }
 }
