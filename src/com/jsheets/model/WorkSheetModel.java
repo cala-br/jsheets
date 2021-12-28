@@ -1,7 +1,6 @@
 package com.jsheets.model;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellFactory;
