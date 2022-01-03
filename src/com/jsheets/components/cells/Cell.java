@@ -5,9 +5,14 @@ import com.jsheets.exceptions.ParseException;
 public abstract class Cell<T> {
   private final int row;
   private final int column;
+  private final CellView view;
   private String expression;
   private T value;
 
+
+  protected CellView getCellView() {
+    return view;
+  }
 
   public String getExpression() {
     return expression;
@@ -26,9 +31,14 @@ public abstract class Cell<T> {
   }
 
 
-  protected Cell(String expression, int row, int col) {
+  protected Cell(CellParams params) {
+    this(params.expression, params.row, params.column, params.view);
+  }
+
+  protected Cell(String expression, int row, int col, CellView view) {
     this.row = row;
     this.column = col;
+    this.view = view;
     applyExpression(expression);
   }
 
@@ -64,5 +74,12 @@ public abstract class Cell<T> {
     final var rowName = Integer.toString(row + 1);
 
     return colName + rowName;
+  }
+
+  public static int[] parsePosition(String position) {
+    final var col = position.charAt(0) - 65;
+    final var row = Integer.parseInt(position.substring(1)) - 1;
+
+    return new int[] { row, col };
   }
 }

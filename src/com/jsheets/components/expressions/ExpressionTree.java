@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.jsheets.components.cells.Cell;
+import com.jsheets.components.cells.CellView;
 import com.jsheets.exceptions.ParseException;
 
 public class ExpressionTree<T, R> {
@@ -12,7 +13,7 @@ public class ExpressionTree<T, R> {
     "+", "-", "*", "/", "(", ")", "&&", "||", "<", "!"
   );
 
-  public static Expression<?, ?> parse(String expression, Cell<?>[][] cells) throws ParseException {
+  public static Expression<?, ?> parse(String expression, CellView cells) throws ParseException {
     var split = splitExpression(expression);
     var i = split
       .stream()
@@ -79,10 +80,10 @@ public class ExpressionTree<T, R> {
     };
   }
 
-  private static Object getOperandValue(String operand, Cell<?>[][] cells) {
+  private static Object getOperandValue(String operand, CellView cells) {
     try {
       var pos = Cell.parsePosition(operand);
-      var cell = cells[pos[0]][pos[1]];
+      var cell = cells.get(pos[0], pos[1]);
 
       System.out.println(cell);
       return cell.getValue();

@@ -3,13 +3,16 @@ package com.jsheets.components.cells;
 import com.jsheets.components.expressions.ExpressionTree;
 import com.jsheets.exceptions.ParseException;
 
-public class ExpressionCell extends Cell<ExpressionTree<?>> {
-  public ExpressionCell(String expression, int row, int col) {
-    super(expression, row, col);
+public class ExpressionCell extends Cell<String> {
+  public ExpressionCell(CellParams params) {
+    super(params);
   }
 
   @Override
-  protected ExpressionTree<?> parse(String expression) throws ParseException {
-    return ExpressionTree.parse(expression);
+  protected String parse(String expression) throws ParseException {
+    return ExpressionTree
+      .parse(expression.substring(1), getCellView())
+      .compute()
+      .toString();
   }
 }
