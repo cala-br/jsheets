@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public abstract class UnaryExpression<T, R> implements Expression<T, R> {
   private final Expression<T, R> expression;

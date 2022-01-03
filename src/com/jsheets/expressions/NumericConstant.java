@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class NumericConstant extends ConstantExpression<Number> {
   public NumericConstant(Number value) {

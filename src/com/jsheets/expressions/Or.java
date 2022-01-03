@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class Or<T> extends BinaryExpression<T, Boolean> {
   public Or(Expression<T, Boolean> left, Expression<T, Boolean> right) {

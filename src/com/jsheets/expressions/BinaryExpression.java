@@ -1,6 +1,6 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
-public abstract class ComparisonExpression<T, R> implements BooleanExpression {
+public abstract class BinaryExpression<T, R> implements Expression<T, R> {
   private final Expression<T, R> left;
   private final Expression<T, R> right;
 
@@ -12,10 +12,7 @@ public abstract class ComparisonExpression<T, R> implements BooleanExpression {
     return right.compute();
   }
 
-  public ComparisonExpression(
-    Expression<T, R> left,
-    Expression<T, R> right
-  ) {
+  public BinaryExpression(Expression<T, R> left, Expression<T, R> right) {
     this.left = left;
     this.right = right;
   }

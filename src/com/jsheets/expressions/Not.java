@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class Not<T> extends UnaryExpression<T, Boolean> {
   public Not(Expression<T, Boolean> expression) {

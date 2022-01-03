@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 import java.util.Arrays;
 import java.util.List;

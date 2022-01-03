@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class Multiply<T> extends BinaryExpression<T, Number> {
   public Multiply(Expression<T, Number> left, Expression<T, Number> right) {

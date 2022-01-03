@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class Negate extends UnaryExpression<Number, Number> {
   public Negate(NumericExpression expression) {

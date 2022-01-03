@@ -1,7 +1,7 @@
 package com.jsheets.components.cells;
 
-import com.jsheets.components.expressions.ExpressionTree;
 import com.jsheets.exceptions.ParseException;
+import com.jsheets.expressions.ExpressionTree;
 
 public class ExpressionCell extends Cell<String> {
   public ExpressionCell(CellParams params) {

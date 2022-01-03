@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class LessThan extends ComparisonExpression<Number, Number> {
   public LessThan(NumericExpression left, NumericExpression right) {

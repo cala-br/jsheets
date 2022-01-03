@@ -1,4 +1,4 @@
-package com.jsheets.components.expressions;
+package com.jsheets.expressions;
 
 public class ConstantExpression<T> implements Expression<T, T> {
   private final T value;
