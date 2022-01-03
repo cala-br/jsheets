@@ -1,4 +1,7 @@
-package com.jsheets.expressions;
+package com.jsheets.expressions.operations;
+
+import com.jsheets.expressions.NumericExpression;
+import com.jsheets.expressions.UnaryExpression;
 
 public class Negate extends UnaryExpression<Number, Number> {
   public Negate(NumericExpression expression) {

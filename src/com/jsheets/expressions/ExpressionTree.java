@@ -7,6 +7,11 @@ import java.util.regex.Pattern;
 import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.exceptions.ParseException;
+import com.jsheets.expressions.operations.Add;
+import com.jsheets.expressions.operations.Divide;
+import com.jsheets.expressions.operations.Multiply;
+import com.jsheets.expressions.operations.NumericConstant;
+import com.jsheets.expressions.operations.Subtract;
 
 public class ExpressionTree<T, R> {
   public static final List<String> operators = Arrays.asList(
