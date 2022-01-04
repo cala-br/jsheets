@@ -1,10 +1,10 @@
 package com.jsheets.expressions.operations;
 
-import com.jsheets.expressions.ComparisonExpression;
-import com.jsheets.expressions.NumericExpression;
+import com.jsheets.expressions.Expression;
+import com.jsheets.expressions.types.ComparisonExpression;
 
-public class LessThan extends ComparisonExpression<Number, Number> {
-  public LessThan(NumericExpression left, NumericExpression right) {
+public class LessThan<T1, T2> extends ComparisonExpression<T1, T2, Number> {
+  public LessThan(Expression<T1, Number> left, Expression<T2, Number> right) {
     super(left, right);
   }
 

@@ -1,10 +1,10 @@
 package com.jsheets.expressions.operations;
 
-import com.jsheets.expressions.NumericExpression;
-import com.jsheets.expressions.UnaryExpression;
+import com.jsheets.expressions.Expression;
+import com.jsheets.expressions.types.UnaryExpression;
 
-public class Negate extends UnaryExpression<Number, Number> {
-  public Negate(NumericExpression expression) {
+public class Negate<T> extends UnaryExpression<T, Number> {
+  public Negate(Expression<T, Number> expression) {
     super(expression);
   }
 

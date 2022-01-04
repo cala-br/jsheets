@@ -1,10 +1,10 @@
 package com.jsheets.expressions.operations;
 
-import com.jsheets.expressions.BinaryExpression;
 import com.jsheets.expressions.Expression;
+import com.jsheets.expressions.types.BinaryExpression;
 
-public class Subtract<T> extends BinaryExpression<T, Number> {
-  public Subtract(Expression<T, Number> left, Expression<T, Number> right) {
+public class Subtract<T1, T2> extends BinaryExpression<T1, T2, Number> {
+  public Subtract(Expression<T1, Number> left, Expression<T2, Number> right) {
     super(left, right);
   }
 
