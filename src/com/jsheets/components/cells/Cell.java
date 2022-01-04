@@ -3,12 +3,15 @@ package com.jsheets.components.cells;
 import com.jsheets.exceptions.ParseException;
 
 public abstract class Cell<T> {
-  private final int row;
-  private final int column;
+  private final CellPosition position;
   private final CellView view;
   private String expression;
   private T value;
 
+
+  public CellPosition getPosition() {
+    return position;
+  }
 
   protected CellView getCellView() {
     return view;
@@ -32,12 +35,11 @@ public abstract class Cell<T> {
 
 
   protected Cell(CellParams params) {
-    this(params.expression, params.row, params.column, params.view);
+    this(params.expression,new CellPosition(params.row, params.column), params.view);
   }
 
-  protected Cell(String expression, int row, int col, CellView view) {
-    this.row = row;
-    this.column = col;
+  protected Cell(String expression, CellPosition position, CellView view) {
+    this.position = position;
     this.view = view;
     applyExpression(expression);
   }
@@ -52,10 +54,7 @@ public abstract class Cell<T> {
 
   @Override
   public String toString() {
-    final var value = getExpression().toString();
-    final var position = formatPosition(row, column);
-
-    return String.format("%s - '%s'", position, value);
+    return String.format("%s - '%s'", getPosition(), getExpression());
   }
 
   public boolean hasValue() {
@@ -66,20 +65,6 @@ public abstract class Cell<T> {
   }
 
   public boolean isAt(int row, int column) {
-    return this.row == row && this.column == column;
-  }
-
-  public static String formatPosition(int row, int col) {
-    final var colName = (char)(col + 65);
-    final var rowName = Integer.toString(row + 1);
-
-    return colName + rowName;
-  }
-
-  public static int[] parsePosition(String position) {
-    final var col = position.charAt(0) - 65;
-    final var row = Integer.parseInt(position.substring(1)) - 1;
-
-    return new int[] { row, col };
+    return getPosition().isAt(row, column);
   }
 }

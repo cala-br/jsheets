@@ -7,6 +7,10 @@ public class CellView {
     this.cells = cells;
   }
 
+  public Cell<?> get(CellPosition pos) {
+    return get(pos.row, pos.col);
+  }
+
   public Cell<?> get(int row, int col) {
     return cells[row][col];
   }
