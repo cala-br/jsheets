@@ -1,9 +1,9 @@
 package com.jsheets.expressions.operands;
 
 import com.jsheets.components.cells.Cell;
-import com.jsheets.expressions.Expression;
+import com.jsheets.expressions.types.NumericExpression;
 
-public class CellExpression implements Expression<Cell<?>, Number> {
+public class CellExpression implements NumericExpression<Cell<?>> {
   private final Cell<?> cell;
 
   public CellExpression(Cell<?> cell) {

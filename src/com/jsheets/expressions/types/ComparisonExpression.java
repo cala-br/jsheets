@@ -2,7 +2,7 @@ package com.jsheets.expressions.types;
 
 import com.jsheets.expressions.Expression;
 
-public abstract class ComparisonExpression<T1, T2, R> implements BooleanExpression {
+public abstract class ComparisonExpression<T1, T2, R> implements BooleanExpression<Object> {
   private final Expression<T1, R> left;
   private final Expression<T2, R> right;
 
