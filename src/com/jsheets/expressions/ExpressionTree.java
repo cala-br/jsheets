@@ -1,100 +1,50 @@
 package com.jsheets.expressions;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Stack;
 
-import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.exceptions.ParseException;
-import com.jsheets.expressions.operations.Add;
-import com.jsheets.expressions.operations.Divide;
-import com.jsheets.expressions.operations.Multiply;
-import com.jsheets.expressions.operations.NumericConstant;
-import com.jsheets.expressions.operations.Subtract;
 
-public class ExpressionTree<T, R> {
-  public static final List<String> operators = Arrays.asList(
-    "+", "-", "*", "/", "(", ")", "&&", "||", "<", "!"
-  );
+public class ExpressionTree {
+  private final Stack<Expression<?, ?>> memo = new Stack<>();
+  private final List<String> postfix;
+  private final CellView cells;
 
-  public static Expression<?, ?> parse(String expression, CellView cells) throws ParseException {
-    var split = splitExpression(expression);
-    var i = split
-      .stream()
-      .filter(operators::contains)
-      .findFirst();
-
-    var in = split.indexOf(i.get());
-    if (in == -1) {
-      throw new ParseException();
-    }
-
-    try {
-      var expr = toExpression(
-        split.get(in),
-        getOperandValue(split.get(in - 1), cells),
-        getOperandValue(split.get(in + 1), cells)
-      );
-
-      return expr;
-    }
-    catch (Exception e) {
-      throw new ParseException();
-    }
-  }
-
-  private static List<String> splitExpression(String expression) {
-    final var result = expression
-      .replaceAll(" ", "")
-      .split(getPattern());
-
-    return Arrays.asList(result);
-  }
-
-  private static String getPattern() {
-    final var WITH_DELIMITER = "((?<=%1$s)|(?=%1$s))";
-    return String.join("|",
-      operators
-        .stream()
-        .map(o -> Pattern.quote(o))
-        .map(o -> String.format(WITH_DELIMITER, o))
-        .toList()
+  private ExpressionTree(String expression, CellView cells) {
+    this.cells = cells;
+    this.postfix = InfixExpression.toPostfix(
+      ExpressionTokenizer.tokenize(expression)
     );
   }
 
-  private static Expression<?, ?> toExpression(String operator, Object ...args) {
-    return switch (operator) {
-      case "+" -> new Add<>(
-        NumericConstant.parse(args[0]),
-        NumericConstant.parse(args[1])
-      );
-      case "-" -> new Subtract<>(
-        NumericConstant.parse(args[0]),
-        NumericConstant.parse(args[1])
-      );
-      case "*" -> new Multiply<>(
-        NumericConstant.parse(args[0]),
-        NumericConstant.parse(args[1])
-      );
-      case "/" -> new Divide<>(
-        NumericConstant.parse(args[0]),
-        NumericConstant.parse(args[1])
-      );
-      default -> throw new ParseException();
-    };
+  public static Expression<?, ?> parse(String expression, CellView cells) throws ParseException {
+    return new ExpressionTree(expression, cells).parse();
   }
 
-  private static Object getOperandValue(String operand, CellView cells) {
-    try {
-      var pos = Cell.parsePosition(operand);
-      var cell = cells.get(pos[0], pos[1]);
 
-      System.out.println(cell);
-      return cell.getValue();
+  private Expression<?, ?> parse() throws ParseException {
+    for (final var t : postfix) {
+      try {
+        pushOperand(t);
+      }
+      catch (ParseException e) {
+        pushOperation(t);
+      }
     }
-    catch (Exception e) {
-      return operand;
+
+    if (memo.empty()) {
+      throw new ParseException();
     }
+
+    return memo.pop();
+  }
+
+  private void pushOperation(String operator) throws ParseException {
+    memo.push(Operation.parse(operator, memo));
+  }
+
+  private void pushOperand(String token) throws ParseException {
+    memo.push(Operand.parse(token, cells));
   }
 }

@@ -1,8 +1,9 @@
 package com.jsheets.expressions.operands;
 
+import com.jsheets.expressions.types.BooleanExpression;
 import com.jsheets.expressions.types.ConstantExpression;
 
-public class BooleanConstant extends ConstantExpression<Boolean> {
+public class BooleanConstant extends ConstantExpression<Boolean> implements BooleanExpression<Boolean> {
   public BooleanConstant(Boolean value) {
     super(value);
   }

@@ -10,7 +10,7 @@ public class Operators {
   private static final List<String> highPrecedence = List.of("/", "*", "%");
   private static final List<String> highestPrecedence = List.of("!");
 
-  private static final List<String> unary = highPrecedence;
+  private static final List<String> unary = highestPrecedence;
   private static final List<String> parentheses = List.of("(", ")");
 
   private static final List<String> logical = new ArrayList<>() {{
