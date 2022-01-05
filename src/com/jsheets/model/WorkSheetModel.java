@@ -1,10 +1,11 @@
 package com.jsheets.model;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellFactory;
+import com.jsheets.components.cells.CellParams;
+import com.jsheets.components.cells.CellView;
 import com.jsheets.util.StringUtil;
 
 public class WorkSheetModel extends AbstractTableModel {
@@ -12,6 +13,10 @@ public class WorkSheetModel extends AbstractTableModel {
   private final static int rows = 100;
 
   private final Cell<?>[][] cells;
+
+  public CellView getView() {
+    return new CellView(cells);
+  }
 
 
   public WorkSheetModel() {
@@ -23,7 +28,7 @@ public class WorkSheetModel extends AbstractTableModel {
   public Cell<?> getCellAt(int row, int col) {
     var cell = cells[row][col];
     if (cell == null) {
-      cell = CellFactory.create("", row, col);
+      cell = createCell("", row, col);
     }
 
     return cell;
@@ -53,6 +58,12 @@ public class WorkSheetModel extends AbstractTableModel {
   @Override
   public void setValueAt(Object value, int row, int col) {
     final var expression = StringUtil.emptyIfNull(value);
-    cells[row][col] = CellFactory.create(expression, row, col);
+    cells[row][col] = createCell(expression, row, col);
+  }
+
+  private Cell<?> createCell(String expression, int row, int col) {
+    return CellFactory.create(
+      new CellParams(expression, row, col, getView())
+    );
   }
 }

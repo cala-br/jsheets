@@ -1,9 +1,9 @@
 package com.jsheets.components.cells;
 
 public class ErrorCell extends TextCell {
-  public ErrorCell(String expression, int row, int column) {
-    super(row, column);
-    setExpression(expression);
+  public ErrorCell(CellParams params) {
+    super(params);
+    setExpression(params.expression);
     setValue("#ERR");
   }
 }

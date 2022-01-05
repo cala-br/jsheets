@@ -29,23 +29,23 @@ public class WorkSheet extends JTable {
   private void handleCellSelection(ListSelectionEvent e) {
     final var rows = getSelectedRows();
     final var cols = getSelectedColumns();
-    final var data = getCellMap(rows, cols);
+    final var data = getCellView(rows, cols);
 
     onCellSelected.invoke(
       new CellSelectionEvent(data, rows, cols)
     );
   }
 
-  private CellSelection getCellMap(int[] rows, int[] cols) {
-    final var map = new CellSelection();
+  private CellList getCellView(int[] rows, int[] cols) {
+    final var data = new CellList();
     for (var row : rows) {
       for (var col : cols) {
-        map.add(
+        data.add(
           model.getCellAt(row, col)
         );
       }
     }
 
-    return map;
+    return data;
   }
 }

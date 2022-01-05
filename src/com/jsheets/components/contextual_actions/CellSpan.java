@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JTextField;
 
-import com.jsheets.components.cells.Cell;
+import com.jsheets.components.cells.CellPosition;
 
 public class CellSpan extends JTextField {
   public CellSpan() {
@@ -16,14 +16,14 @@ public class CellSpan extends JTextField {
   }
 
   public void updateText(int[] rows, int[] cols) {
-    var firstCell = Cell.formatPosition(rows[0], cols[0]);
-    var lastCell = Cell.formatPosition(
+    final var firstCell = new CellPosition(rows[0], cols[0]);
+    final var lastCell = new CellPosition(
       rows[rows.length - 1],
       cols[cols.length - 1]
     );
 
-    var cellName = firstCell.equals(lastCell)
-      ? firstCell
+    final var cellName = firstCell.equals(lastCell)
+      ? firstCell.toString()
       : firstCell + ":" + lastCell;
 
     setText(cellName);

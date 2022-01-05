@@ -3,8 +3,8 @@ package com.jsheets.components.cells;
 import com.jsheets.exceptions.ParseException;
 
 public class NumericCell extends Cell<Number> {
-  public NumericCell(String expression, int row, int col) {
-    super(expression, row, col);
+  public NumericCell(CellParams params) {
+    super(params);
   }
 
   @Override
