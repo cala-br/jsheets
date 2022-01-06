@@ -5,37 +5,52 @@ import java.util.List;
 import java.util.Stack;
 
 public class InfixExpression {
+  public static List<String> toPostfix(String infix) {
+    return toPostfix(
+      ExpressionTokenizer.tokenize(infix)
+    );
+  }
+
   public static List<String> toPostfix(List<String> infix) {
-    final var stack = new Stack<String>();
+    final var memo = new Stack<String>();
     final var result = new ArrayList<String>();
 
     for (final var c : infix) {
-      if (Operators.getPrecedence(c) > 0) {
-        while (!stack.isEmpty() && Operators.getPrecedence(stack.peek()) > Operators.getPrecedence(c)) {
-          result.add(stack.pop());
+      if (Operator.isOperator(c)) {
+        while (!memo.isEmpty() && comparePrecedence(memo.peek(), c) > 0) {
+          result.add(memo.pop());
         }
-        stack.push(c);
+        memo.push(c);
       }
       else if (c.equals(")")) {
-        var x = stack.pop();
+        var x = memo.pop();
 
         while (!x.equals("(")) {
           result.add(x);
-          x = stack.pop();
+          x = memo.pop();
         }
       }
       else if (c.equals("(")) {
-        stack.push(c);
+        memo.push(c);
       }
       else {
         result.add(c);
       }
     }
 
-    while (!stack.isEmpty()) {
-      result.add(stack.pop());
+    while (!memo.isEmpty()) {
+      result.add(memo.pop());
     }
 
     return result;
+  }
+
+  public static int comparePrecedence(String a, String b) {
+    final var first = Operator.fromSymbol(a);
+    final var second = Operator.fromSymbol(b);
+
+    return first.isPresent() && second.isPresent()
+      ? first.get().comparePrecendeceTo(second.get())
+      : -1;
   }
 }

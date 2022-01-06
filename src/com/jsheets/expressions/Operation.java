@@ -22,24 +22,24 @@ import com.jsheets.expressions.types.NumericExpression;
 
 public class Operation {
   private final Stack<Expression<?, ?>> memo;
-  private final String operator;
+  private final Operator operator;
 
-  private Operation(String operator, Stack<Expression<?, ?>> memo) {
+  private Operation(Operator operator, Stack<Expression<?, ?>> memo) {
     this.memo = memo;
     this.operator = operator;
   }
 
-  public static Expression<?, ?> parse(String operator, Stack<Expression<?, ?>> memo) {
+  public static Expression<?, ?> parse(Operator operator, Stack<Expression<?, ?>> memo) {
     return new Operation(operator, memo).parse();
   }
 
 
   private Expression<?, ?> parse() {
-    if (Operators.isBinary(operator)) {
+    if (operator.is(Operator.Kind.BINARY)) {
       return createBinaryExpression();
     }
 
-    else if (Operators.isUnary(operator)) {
+    else if (operator.is(Operator.Kind.UNARY)) {
       return createUnaryExpression();
     }
 
@@ -50,11 +50,11 @@ public class Operation {
     final var right = memo.pop();
     final var left = memo.pop();
 
-    if (left instanceof NumericExpression<?> p && right instanceof NumericExpression<?> n) {
-      return numericOperation(operator, p, n);
+    if (left instanceof NumericExpression<?> l && right instanceof NumericExpression<?> r) {
+      return numericOperation(l, r);
     }
-    else if (left instanceof BooleanExpression<?> p && right instanceof BooleanExpression<?> n) {
-      return booleanOperation(operator, p, n);
+    else if (left instanceof BooleanExpression<?> l && right instanceof BooleanExpression<?> r) {
+      return booleanOperation(l, r);
     }
 
     throw new ParseException();
@@ -64,43 +64,41 @@ public class Operation {
     final var operand = memo.pop();
 
     if (operand instanceof BooleanExpression<?> o) {
-      return booleanOperation(operator, o, null);
+      return booleanOperation(o, null);
     }
 
     throw new ParseException();
   }
 
 
-  private static <T1, T2> Expression<?, ?> numericOperation(
-    String operator,
+  private <T1, T2> Expression<?, ?> numericOperation(
     NumericExpression<T1> a,
     NumericExpression<T2> b
   ) {
     return switch (operator) {
-      case "+" -> new Add<>(a, b);
-      case "-" -> new Subtract<>(a, b);
-      case "*" -> new Multiply<>(a, b);
-      case "/" -> new Divide<>(a, b);
-      case "%" -> new Modulo<>(a, b);
-      case "<" -> new LessThan<>(a, b);
-      case ">" -> new GreaterThan<>(a, b);
-      case "<=" -> new LessEqual<>(a, b);
-      case ">=" -> new GreaterEqual<>(a, b);
-      case "==" -> new Equal<>(a, b);
-      case "!=" -> new NotEqual<>(a, b);
+      case ADDITION -> new Add<>(a, b);
+      case SUBTRACTION -> new Subtract<>(a, b);
+      case MULTIPLICATION -> new Multiply<>(a, b);
+      case DIVISION -> new Divide<>(a, b);
+      case MODULO -> new Modulo<>(a, b);
+      case LESS_THAN -> new LessThan<>(a, b);
+      case GREATER_THAN -> new GreaterThan<>(a, b);
+      case LESS_EQUAL -> new LessEqual<>(a, b);
+      case GREATER_EQUAL -> new GreaterEqual<>(a, b);
+      case EQUAL -> new Equal<>(a, b);
+      case NOT_EQUAL -> new NotEqual<>(a, b);
       default -> throw new ParseException();
     };
   }
 
-  private static <T1, T2> Expression<?, ?> booleanOperation(
-    String operator,
+  private <T1, T2> Expression<?, ?> booleanOperation(
     BooleanExpression<T1> a,
     BooleanExpression<T2> b
   ) {
     return switch (operator) {
-      case "&&" -> new And<>(a, b);
-      case "||" -> new Or<>(a, b);
-      case "!" -> new Not<>(a);
+      case AND -> new And<>(a, b);
+      case OR -> new Or<>(a, b);
+      case NOT -> new Not<>(a);
       default -> throw new ParseException();
     };
   }
