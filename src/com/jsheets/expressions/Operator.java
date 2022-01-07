@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 public enum Operator {
   OPENING_PARENTHESIS("(", Precedence.NONE, Kind.GROUPING),
   CLOSING_PARENTHESIS(")", Precedence.NONE, Kind.GROUPING),
+
   OR ("||", Precedence.VERY_LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
   AND("&&", Precedence.VERY_LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
   LESS_THAN("<", Precedence.LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
@@ -15,11 +16,13 @@ public enum Operator {
   GREATER_EQUAL(">=", Precedence.LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
   EQUAL("==", Precedence.LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
   NOT_EQUAL("!=", Precedence.LOW, EnumSet.of(Kind.LOGICAL, Kind.BINARY)),
+
   ADDITION("+", Precedence.NORMAL, EnumSet.of(Kind.ARITHMETIC, Kind.BINARY)),
   SUBTRACTION("-", Precedence.NORMAL, EnumSet.of(Kind.ARITHMETIC, Kind.BINARY)),
   MULTIPLICATION("*", Precedence.HIGH, EnumSet.of(Kind.ARITHMETIC, Kind.BINARY)),
   DIVISION("/", Precedence.HIGH, EnumSet.of(Kind.ARITHMETIC, Kind.BINARY)),
   MODULO("%", Precedence.HIGH, EnumSet.of(Kind.ARITHMETIC, Kind.BINARY)),
+
   NOT("!", Precedence.VERY_HIGH, EnumSet.of(Kind.LOGICAL, Kind.UNARY));
 
   public enum Precedence {
