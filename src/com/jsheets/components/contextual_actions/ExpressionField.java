@@ -7,7 +7,6 @@ import com.jsheets.components.work_sheet.CellSelectionEvent;
 public class ExpressionField extends JTextField {
   public ExpressionField() {
     super();
-    setColumns(30);
   }
 
   public void setText(CellSelectionEvent e) {
