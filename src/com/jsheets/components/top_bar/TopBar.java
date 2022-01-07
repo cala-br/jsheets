@@ -6,9 +6,7 @@ import javax.swing.JMenuItem;
 
 import com.jsheets.components.icons.CopyIcon;
 import com.jsheets.components.icons.CutIcon;
-import com.jsheets.components.icons.OpenFileIcon;
 import com.jsheets.components.icons.PasteIcon;
-import com.jsheets.components.icons.SaveIcon;
 
 public class TopBar extends JMenuBar {
   public TopBar() {
@@ -20,8 +18,8 @@ public class TopBar extends JMenuBar {
 
   private JMenu createFileMenu() {
     return new MenuTab("File",
-      new JMenuItem("Save", new SaveIcon()),
-      new JMenuItem("Open", new OpenFileIcon())
+      new SaveItem(),
+      new OpenFileItem()
     );
   }
 
