@@ -1,17 +1,18 @@
 package com.jsheets.components.work_sheet;
 
+import java.util.function.Consumer;
+
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
 import com.jsheets.model.WorkSheetModel;
-import com.jsheets.util.Action;
 
 public class WorkSheet extends JTable {
-  private final Action<CellSelectionEvent> onCellSelected;
+  private final Consumer<CellSelectionEvent> onCellSelected;
   private final WorkSheetModel model;
 
-  public WorkSheet(Action<CellSelectionEvent> onCellSelected) {
+  public WorkSheet(Consumer<CellSelectionEvent> onCellSelected) {
     super(new WorkSheetModel());
     this.onCellSelected = onCellSelected;
     this.model = (WorkSheetModel)getModel();
@@ -31,7 +32,7 @@ public class WorkSheet extends JTable {
     final var cols = getSelectedColumns();
     final var data = getCellView(rows, cols);
 
-    onCellSelected.invoke(
+    onCellSelected.accept(
       new CellSelectionEvent(data, rows, cols)
     );
   }
