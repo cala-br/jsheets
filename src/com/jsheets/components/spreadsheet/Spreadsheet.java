@@ -48,7 +48,7 @@ public class Spreadsheet extends JTabbedPane {
 
   private void refreshTabs() {
     for (int i = 0; i < getTabCount(); i++) {
-      setTabComponentAt(i, new CloseableTab(this));
+      setTabComponentAt(i, new CloseableTab(this, this::remove));
     }
   }
 }
