@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import com.jsheets.components.contextual_actions.ContextualActions;
 import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;
-import com.jsheets.components.work_sheet.CellSelectionEvent;
-import com.jsheets.components.work_sheet.WorkSheet;
+import com.jsheets.components.worksheet.CellSelectionEvent;
+import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.WorksheetLoadedEvent;
 
@@ -45,8 +45,8 @@ public class MainFrame extends JFrame {
     spreadsheet.add(e.title, worksheet);
   }
 
-  private WorkSheet createWorksheet() {
-    return new WorkSheet(this::onCellSelected);
+  private Worksheet createWorksheet() {
+    return new Worksheet(this::onCellSelected);
   }
 
   private void onCellSelected(CellSelectionEvent e) {

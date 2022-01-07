@@ -2,7 +2,7 @@ package com.jsheets.components.contextual_actions;
 
 import javax.swing.JTextField;
 
-import com.jsheets.components.work_sheet.CellSelectionEvent;
+import com.jsheets.components.worksheet.CellSelectionEvent;
 
 public class ExpressionField extends JTextField {
   public ExpressionField() {

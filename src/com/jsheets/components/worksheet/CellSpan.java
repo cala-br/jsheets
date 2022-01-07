@@ -1,4 +1,4 @@
-package com.jsheets.components.work_sheet;
+package com.jsheets.components.worksheet;
 
 import java.util.ArrayList;
 import java.util.List;

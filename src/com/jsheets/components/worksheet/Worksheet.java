@@ -1,4 +1,4 @@
-package com.jsheets.components.work_sheet;
+package com.jsheets.components.worksheet;
 
 import java.util.function.Consumer;
 
@@ -10,11 +10,11 @@ import com.jsheets.components.cells.CellView;
 import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
 
-public class WorkSheet extends JTable {
+public class Worksheet extends JTable {
   private final Consumer<CellSelectionEvent> onCellSelected;
   private final WorkSheetModel model;
 
-  public WorkSheet(Consumer<CellSelectionEvent> onCellSelected) {
+  public Worksheet(Consumer<CellSelectionEvent> onCellSelected) {
     super(new WorkSheetModel());
     this.onCellSelected = onCellSelected;
     this.model = (WorkSheetModel)getModel();

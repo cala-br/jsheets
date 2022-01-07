@@ -5,9 +5,9 @@ import java.awt.Container;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 
-import com.jsheets.components.work_sheet.RowHeader;
-import com.jsheets.components.work_sheet.TableScrollPane;
-import com.jsheets.components.work_sheet.WorkSheet;
+import com.jsheets.components.worksheet.RowHeader;
+import com.jsheets.components.worksheet.TableScrollPane;
+import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
 
 public class Spreadsheet extends JTabbedPane {
@@ -25,11 +25,11 @@ public class Spreadsheet extends JTabbedPane {
   }
 
 
-  public void add(WorkSheet worksheet) {
+  public void add(Worksheet worksheet) {
     add("New*", worksheet);
   }
 
-  public void add(String title, WorkSheet worksheet) {
+  public void add(String title, Worksheet worksheet) {
     ServiceRepository
       .worksheetManager
       .register(worksheet);
@@ -38,7 +38,7 @@ public class Spreadsheet extends JTabbedPane {
     refreshTabs();
   }
 
-  private Container wrapWorksheet(WorkSheet worksheet) {
+  private Container wrapWorksheet(Worksheet worksheet) {
     return RowHeader.wrap(
       new TableScrollPane(
         worksheet, 15
