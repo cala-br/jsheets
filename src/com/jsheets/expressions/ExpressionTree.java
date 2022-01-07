@@ -13,9 +13,7 @@ public class ExpressionTree {
 
   private ExpressionTree(String expression, CellView cells) {
     this.cells = cells;
-    this.postfix = InfixExpression.toPostfix(
-      ExpressionTokenizer.tokenize(expression)
-    );
+    this.postfix = InfixExpression.toPostfix(expression);
   }
 
   public static Expression<?, ?> parse(String expression, CellView cells) throws ParseException {
@@ -25,12 +23,12 @@ public class ExpressionTree {
 
   private Expression<?, ?> parse() throws ParseException {
     for (final var t : postfix) {
-      try {
-        pushOperand(t);
-      }
-      catch (ParseException e) {
-        pushOperation(t);
-      }
+      Operator
+        .fromSymbol(t)
+        .ifPresentOrElse(
+          (o) -> pushOperation(o),
+          () -> pushOperand(t)
+        );
     }
 
     if (memo.empty()) {
@@ -40,11 +38,11 @@ public class ExpressionTree {
     return memo.pop();
   }
 
-  private void pushOperation(String operator) throws ParseException {
-    memo.push(Operation.parse(operator, memo));
-  }
-
   private void pushOperand(String token) throws ParseException {
     memo.push(Operand.parse(token, cells));
+  }
+
+  private void pushOperation(Operator operator) throws ParseException {
+    memo.push(Operation.parse(operator, memo));
   }
 }

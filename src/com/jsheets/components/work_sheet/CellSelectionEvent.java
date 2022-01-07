@@ -10,6 +10,6 @@ public class CellSelectionEvent {
     this.data = data;
     this.rows = rows;
     this.columns = columns;
-    this.hasSingleCell = data.size() > 1;
+    this.hasSingleCell = data.size() == 1;
   }
 }

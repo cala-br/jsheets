@@ -8,7 +8,10 @@ public class ExpressionTokenizer {
   public static List<String> tokenize(String expression) {
     return StringTokenizer.splitKeepingTokens(
       expression.replaceAll(" ", ""),
-      Operators.getAllByLargestPossibleToken()
+      Operator
+        .getAllByLargestPossibleSymbol()
+        .map(o -> o.getSymbol())
+        .toList()
     );
   }
 }

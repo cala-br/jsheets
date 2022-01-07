@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
       new TableScrollPane(
         new WorkSheet(e -> {
           actions.setSelectedCell(e.rows, e.columns);
-          actions.isExpressionReadonly(!e.hasSingleCell);
+          actions.isExpressionEditable(e.hasSingleCell);
           actions.setExpression(e);
         }), 15
       )
