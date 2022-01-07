@@ -5,52 +5,79 @@ import java.util.List;
 import java.util.Stack;
 
 public class InfixExpression {
-  public static List<String> toPostfix(String infix) {
-    return toPostfix(
-      ExpressionTokenizer.tokenize(infix)
-    );
+  private final ArrayList<String> result = new ArrayList<>();
+  private final Stack<String> memo = new Stack<>();
+  private final List<String> infix;
+
+  private InfixExpression(List<String> infix) {
+    this.infix = infix;
   }
 
-  public static List<String> toPostfix(List<String> infix) {
-    final var memo = new Stack<String>();
-    final var result = new ArrayList<String>();
 
-    for (final var c : infix) {
-      if (Operator.isOperator(c)) {
-        while (!memo.isEmpty() && comparePrecedence(memo.peek(), c) > 0) {
-          result.add(memo.pop());
-        }
-        memo.push(c);
-      }
-      else if (c.equals(")")) {
-        var x = memo.pop();
-
-        while (!x.equals("(")) {
-          result.add(x);
-          x = memo.pop();
-        }
-      }
-      else if (c.equals("(")) {
-        memo.push(c);
-      }
-      else {
-        result.add(c);
-      }
+  public List<String> toPostfix() {
+    for (final var term : infix) {
+      Operator
+        .fromSymbol(term)
+        .ifPresentOrElse(
+          (o) -> handleOperator(o),
+          () -> result.add(term)
+        );
     }
-
-    while (!memo.isEmpty()) {
-      result.add(memo.pop());
-    }
-
+    popRemaining();
     return result;
   }
 
-  public static int comparePrecedence(String a, String b) {
-    final var first = Operator.fromSymbol(a);
-    final var second = Operator.fromSymbol(b);
+  private void handleOperator(Operator o) {
+    if (o == Operator.CLOSING_PARENTHESIS) {
+      popParentheses();
+    }
+    else if (o == Operator.OPENING_PARENTHESIS) {
+      memo.push(o.getSymbol());
+    }
+    else {
+      popPrecedingTerms(o);
+    }
+  }
 
-    return first.isPresent() && second.isPresent()
-      ? first.get().comparePrecendeceTo(second.get())
-      : -1;
+  private void popParentheses() {
+    var x = memo.pop();
+    while (!x.equals("(")) {
+      result.add(x);
+      x = memo.pop();
+    }
+  }
+
+  private void popPrecedingTerms(Operator o) {
+    while (canPopPrecedingTerm(o)) {
+      result.add(memo.pop());
+    }
+
+    memo.push(o.getSymbol());
+  }
+
+  private boolean canPopPrecedingTerm(Operator o) {
+    return (
+      !memo.isEmpty() && hasLowerPrecedenceThanPreceding(o)
+    );
+  }
+
+  private boolean hasLowerPrecedenceThanPreceding(Operator o) {
+    final var preceding = memo.peek();
+    final var maybeOp = Operator.fromSymbol(preceding);
+    return maybeOp.isPresent()
+      ? maybeOp.get().comparePrecendeceTo(o) > 0
+      : false;
+  }
+
+  private void popRemaining() {
+    while (!memo.isEmpty()) {
+      result.add(memo.pop());
+    }
+  }
+
+  public static List<String> toPostfix(String infix) {
+    final var tokens = ExpressionTokenizer.tokenize(infix);
+    final var expr = new InfixExpression(tokens);
+    return expr.toPostfix();
   }
 }
