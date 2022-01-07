@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
+import com.jsheets.components.icons.FunctionIcon;
 import com.jsheets.components.work_sheet.CellSelectionEvent;
 
 public class ContextualActions extends JPanel {
