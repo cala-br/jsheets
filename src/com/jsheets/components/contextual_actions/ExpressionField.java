@@ -12,8 +12,8 @@ public class ExpressionField extends JTextField {
 
   public void setText(CellSelectionEvent e) {
     final var text = e.hasSingleCell
-      ? e.data.onlyWithValue().toString()
-      : e.data.get(0).getExpression();
+      ? e.data.get(0).getExpression()
+      : e.data.onlyWithValue().toString();
 
     setText(text);
   }

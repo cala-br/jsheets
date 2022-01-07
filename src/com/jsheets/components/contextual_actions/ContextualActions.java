@@ -28,7 +28,7 @@ public class ContextualActions extends JPanel {
     expression.setText(e);
   }
 
-  public void isExpressionReadonly(boolean readonly) {
-    expression.setEditable(readonly);
+  public void isExpressionEditable(boolean editable) {
+    expression.setEditable(editable);
   }
 }
