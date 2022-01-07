@@ -1,18 +1,20 @@
 package com.jsheets.frames;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 
 import javax.swing.JFrame;
 
 import com.jsheets.components.contextual_actions.ContextualActions;
+import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;
-import com.jsheets.components.work_sheet.RowHeader;
-import com.jsheets.components.work_sheet.TableScrollPane;
+import com.jsheets.components.work_sheet.CellSelectionEvent;
 import com.jsheets.components.work_sheet.WorkSheet;
+import com.jsheets.services.ServiceRepository;
+import com.jsheets.services.storage.WorksheetLoadedEvent;
 
 public class MainFrame extends JFrame {
   private final ContextualActions actions = new ContextualActions();
+  private final Spreadsheet spreadsheet = new Spreadsheet();
 
   public MainFrame() {
     super();
@@ -22,20 +24,34 @@ public class MainFrame extends JFrame {
     setJMenuBar(new TopBar());
 
     add(actions, BorderLayout.NORTH);
-    add(createTable(), BorderLayout.CENTER);
+    add(spreadsheet, BorderLayout.CENTER);
+
+    spreadsheet.add(
+      createWorksheet()
+    );
+
+    ServiceRepository
+      .storageService
+      .onWorksheetLoaded
+      .subscribe(this::onWorksheetLoaded);
+
     pack();
   }
 
 
-  private Container createTable() {
-    return RowHeader.wrap(
-      new TableScrollPane(
-        new WorkSheet(e -> {
-          actions.setSelectedCell(e.rows, e.columns);
-          actions.isExpressionEditable(e.hasSingleCell);
-          actions.setExpression(e);
-        }), 15
-      )
-    );
+  private void onWorksheetLoaded(WorksheetLoadedEvent e) {
+    final var worksheet = createWorksheet();
+    worksheet.loadSerializedCells(e.cells);
+    spreadsheet.add(e.title, worksheet);
+  }
+
+  private WorkSheet createWorksheet() {
+    return new WorkSheet(this::onCellSelected);
+  }
+
+  private void onCellSelected(CellSelectionEvent e) {
+    actions.setSelectedCell(e.rows, e.columns);
+    actions.isExpressionEditable(e.hasSingleCell);
+    actions.setExpression(e);
   }
 }

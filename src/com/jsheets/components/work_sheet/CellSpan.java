@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.jsheets.components.cells.Cell;
 
-public class CellList extends ArrayList<Cell<?>> {
+public class CellSpan extends ArrayList<Cell<?>> {
   public List<Cell<?>> onlyWithValue() {
     return this
       .stream()
