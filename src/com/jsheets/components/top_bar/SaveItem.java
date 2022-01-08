@@ -9,6 +9,7 @@ import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.SaveIcon;
 import com.jsheets.services.ServiceRepository;
+import com.jsheets.services.storage.JSheetPath;
 
 public class SaveItem extends JMenuItem {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
@@ -26,7 +27,7 @@ public class SaveItem extends JMenuItem {
 
   private void saveWorksheet(File f) {
     ServiceRepository.storageService.saveWorksheet(
-      f.getAbsolutePath(),
+      new JSheetPath(f),
       getSerializableCells()
     );
   }

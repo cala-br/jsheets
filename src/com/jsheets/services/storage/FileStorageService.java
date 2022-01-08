@@ -11,8 +11,8 @@ import com.jsheets.components.cells.SerializableCell;
 
 public class FileStorageService extends StorageService {
   @Override
-  public void loadWorksheet(String path) {
-    final var file = new File(path);
+  public void loadWorksheet(JSheetPath path) {
+    final var file = new File(path.getPath());
     try (
       final var fileIn = new FileInputStream(file);
       final var objIn = new ObjectInputStream(fileIn);
@@ -21,7 +21,7 @@ public class FileStorageService extends StorageService {
 
       if (raw instanceof SerializableCell[] cells) {
         onWorksheetLoaded.fire(
-          new WorksheetLoadedEvent(file.getName(), cells)
+          new WorksheetLoadedEvent(path, cells)
         );
       }
     }
@@ -31,15 +31,16 @@ public class FileStorageService extends StorageService {
   }
 
   @Override
-  public void saveWorksheet(String path, SerializableCell[] cells) {
-    final var pathWithExtension = path + ".jsheet";
-    final var file = new File(pathWithExtension);
+  public void saveWorksheet(JSheetPath path, SerializableCell[] cells) {
+    final var file = new File(path.getPath());
     try (
       final var fileOut = new FileOutputStream(file);
       final var objOut = new ObjectOutputStream(fileOut);
     ) {
       objOut.writeObject(cells);
-      onWorksheetSaved.fire("");
+      onWorksheetSaved.fire(
+        new WorksheetSavedEvent(path)
+      );
     }
     catch (IOException e) {
       onException.fire(e);
