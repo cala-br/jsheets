@@ -7,8 +7,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import com.jsheets.components.cells.CellSelectionEvent;
 import com.jsheets.components.icons.FunctionIcon;
-import com.jsheets.components.worksheet.CellSelectionEvent;
 
 public class ContextualActions extends JPanel {
   private final SelectedCellsField selectedCell = new SelectedCellsField();

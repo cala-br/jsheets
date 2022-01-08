@@ -4,10 +4,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import com.jsheets.components.cells.CellSelectionEvent;
 import com.jsheets.components.contextual_actions.ContextualActions;
 import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;
-import com.jsheets.components.worksheet.CellSelectionEvent;
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.WorksheetLoadedEvent;

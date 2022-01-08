@@ -1,10 +1,8 @@
-package com.jsheets.components.worksheet;
+package com.jsheets.components.cells;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.jsheets.components.cells.Cell;
 
 public class CellSpan extends ArrayList<Cell<?>> {
   public List<Cell<?>> onlyWithValue() {

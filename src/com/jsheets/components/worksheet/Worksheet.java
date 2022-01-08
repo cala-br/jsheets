@@ -6,6 +6,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
+import com.jsheets.components.cells.CellSelectionEvent;
+import com.jsheets.components.cells.CellSpan;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
