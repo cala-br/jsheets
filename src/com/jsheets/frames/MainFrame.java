@@ -54,4 +54,14 @@ public class MainFrame extends JFrame {
     actions.isExpressionEditable(e.hasSingleCell);
     actions.setExpression(e);
   }
+
+
+  @Override
+  public void removeNotify() {
+    super.removeNotify();
+    ServiceRepository
+      .storageService
+      .onWorksheetLoaded
+      .unsubscribe(this::onWorksheetLoaded);
+  }
 }
