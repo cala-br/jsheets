@@ -3,43 +3,39 @@ package com.jsheets.components.top_bar;
 
 import java.io.File;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.SaveIcon;
 import com.jsheets.services.ServiceRepository;
 
 public class SaveItem extends JMenuItem {
-  private final JFileChooser chooser = new JFileChooser();
+  private final JSheetFileChooser chooser = new JSheetFileChooser();
 
   public SaveItem() {
     super();
     setText("Save");
     setIcon(new SaveIcon());
+    addActionListener(l -> chooser.showSaveDialog(null));
 
-    chooser.setFileFilter(new FileNameExtensionFilter("JSheets", "jsheet"));
-    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    chooser.setCurrentDirectory(new File("." + File.separator));
+    chooser
+      .onFileChoosed
+      .subscribe(this::saveWorksheet);
+  }
 
-    addActionListener(l -> {
-      final var result = chooser.showSaveDialog(null);
-      if (result != JFileChooser.APPROVE_OPTION) {
-        return;
-      }
+  private void saveWorksheet(File f) {
+    ServiceRepository.storageService.saveWorksheet(
+      f.getAbsolutePath(),
+      getSerializableCells()
+    );
+  }
 
-      final var pickedFile = chooser
-        .getSelectedFile()
-        .getAbsolutePath();
-
-      ServiceRepository.storageService.saveWorksheet(
-        pickedFile,
-        ServiceRepository
-          .worksheetManager
-          .getCurrentlyActive()
-          .getCellView()
-          .toSerializableArray()
-      );
-    });
+  private SerializableCell[] getSerializableCells() {
+    return ServiceRepository
+      .worksheetManager
+      .getCurrentlyActive()
+      .getCellView()
+      .toSerializableArray();
   }
 }

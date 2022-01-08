@@ -2,39 +2,29 @@ package com.jsheets.components.top_bar;
 
 import java.io.File;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.OpenFileIcon;
 import com.jsheets.services.ServiceRepository;
 
 public class OpenFileItem extends JMenuItem {
-  private final JFileChooser chooser = new JFileChooser();
+  private final JSheetFileChooser chooser = new JSheetFileChooser();
 
   public OpenFileItem() {
     super();
     setText("Open");
     setIcon(new OpenFileIcon());
+    addActionListener(l -> chooser.showOpenDialog(null));
 
-    chooser.setAcceptAllFileFilterUsed(false);
-    chooser.setFileFilter(new FileNameExtensionFilter("JSheets", "jsheet"));
-    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    chooser.setCurrentDirectory(new File("." + File.separator));
+    chooser
+      .onFileChoosed
+      .subscribe(this::loadWorksheet);
+  }
 
-    addActionListener(l -> {
-      final var result = chooser.showOpenDialog(null);
-      if (result != JFileChooser.APPROVE_OPTION) {
-        return;
-      }
-
-      final var pickedFile = chooser
-        .getSelectedFile()
-        .getAbsolutePath();
-
-      ServiceRepository
-        .storageService
-        .loadWorksheet(pickedFile);
-    });
+  private void loadWorksheet(File f) {
+    ServiceRepository
+      .storageService
+      .loadWorksheet(f.getAbsolutePath());
   }
 }
