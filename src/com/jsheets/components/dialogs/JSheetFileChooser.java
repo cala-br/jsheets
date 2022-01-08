@@ -2,7 +2,7 @@ package com.jsheets.components.dialogs;
 
 import java.awt.Component;
 import java.io.File;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,25 +23,22 @@ public class JSheetFileChooser extends JFileChooser {
 
   @Override
   public int showSaveDialog(Component parent) {
-    return showDialog(this::showSaveDialog, parent);
+    return showDialogAndFireEvent(() -> super.showSaveDialog(parent));
   }
 
   @Override
   public int showOpenDialog(Component parent) {
-    return showDialog(this::showOpenDialog, parent);
+    return showDialogAndFireEvent(() -> super.showOpenDialog(parent));
   }
 
 
-  private int showDialog(
-    Function<Component, Integer> action,
-    Component parent
-  ) {
-    final var result = action.apply(parent);
-    maybeInvokeEvent(result);
+  private int showDialogAndFireEvent(Supplier<Integer> action) {
+    final var result = action.get();
+    maybeFireEvent(result);
     return result;
   }
 
-  private void maybeInvokeEvent(int result) {
+  private void maybeFireEvent(int result) {
     if (result == JFileChooser.APPROVE_OPTION) {
       onFileChoosed.fire(
         getSelectedFile()
