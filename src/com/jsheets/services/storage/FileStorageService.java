@@ -35,7 +35,8 @@ public class FileStorageService extends StorageService {
 
   @Override
   public void saveWorksheet(String path, SerializableCell[] cells) {
-    final var file = new File(path);
+    final var pathWithExtension = path + ".jsheet";
+    final var file = new File(pathWithExtension);
     try (
       final var fileOut = new FileOutputStream(file);
       final var objOut = new ObjectOutputStream(fileOut);
