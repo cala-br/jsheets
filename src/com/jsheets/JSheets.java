@@ -1,7 +1,5 @@
 package com.jsheets;
 
-import javax.swing.JOptionPane;
-
 import com.jsheets.components.dialogs.ErrorDialog;
 import com.jsheets.frames.MainFrame;
 import com.jsheets.services.ServiceRepository;
