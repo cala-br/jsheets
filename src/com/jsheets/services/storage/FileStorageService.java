@@ -25,11 +25,8 @@ public class FileStorageService extends StorageService {
         );
       }
     }
-    catch (IOException e) {
-
-    }
-    catch (ClassNotFoundException e) {
-
+    catch (IOException | ClassNotFoundException e) {
+      onException.fire(e);
     }
   }
 
@@ -45,7 +42,7 @@ public class FileStorageService extends StorageService {
       onWorksheetSaved.fire("");
     }
     catch (IOException e) {
-
+      onException.fire(e);
     }
   }
 }
