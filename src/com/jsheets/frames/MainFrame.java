@@ -19,7 +19,7 @@ public class MainFrame extends JFrame {
   public MainFrame() {
     super();
 
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
     setJMenuBar(new TopBar());
 
