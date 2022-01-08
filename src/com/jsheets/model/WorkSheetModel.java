@@ -6,6 +6,7 @@ import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellFactory;
 import com.jsheets.components.cells.CellParams;
 import com.jsheets.components.cells.CellView;
+import com.jsheets.components.cells.ExpressionCell;
 import com.jsheets.util.StringUtil;
 
 public class WorkSheetModel extends AbstractTableModel {
@@ -59,7 +60,19 @@ public class WorkSheetModel extends AbstractTableModel {
   public void setValueAt(Object value, int row, int col) {
     final var expression = StringUtil.emptyIfNull(value);
     cells[row][col] = createCell(expression, row, col);
+
+    recomputeExpressions();
   }
+
+  private void recomputeExpressions() {
+    getView()
+      .getAllWithValue()
+      .filter(c -> c instanceof ExpressionCell)
+      .forEach(c -> c.applyExpression(
+        c.getExpression()
+      ));
+  }
+
 
   private Cell<?> createCell(String expression, int row, int col) {
     return CellFactory.create(

@@ -18,12 +18,16 @@ public class CellView {
   }
 
   public SerializableCell[] toSerializableArray() {
+    return getAllWithValue()
+      .map(c -> SerializableCell.from(c))
+      .toArray(SerializableCell[]::new);
+  }
+
+  public Stream<Cell<?>> getAllWithValue() {
     return Stream
       .of(cells)
       .flatMap(c -> Stream.of(c))
       .filter(c -> c != null)
-      .filter(c -> c.hasValue())
-      .map(c -> SerializableCell.from(c))
-      .toArray(SerializableCell[]::new);
+      .filter(c -> c.hasValue());
   }
 }
