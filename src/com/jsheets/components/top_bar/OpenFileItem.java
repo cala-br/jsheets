@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jsheets.components.icons.OpenFileIcon;
 import com.jsheets.services.ServiceRepository;
@@ -16,6 +17,8 @@ public class OpenFileItem extends JMenuItem {
     setText("Open");
     setIcon(new OpenFileIcon());
 
+    chooser.setAcceptAllFileFilterUsed(false);
+    chooser.setFileFilter(new FileNameExtensionFilter("JSheets", "jsheet"));
     chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     chooser.setCurrentDirectory(new File("." + File.separator));
 
