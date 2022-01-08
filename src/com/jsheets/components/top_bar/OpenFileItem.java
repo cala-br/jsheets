@@ -27,4 +27,10 @@ public class OpenFileItem extends JMenuItem {
       .storageService
       .loadWorksheet(f.getAbsolutePath());
   }
+
+  @Override
+  public void removeNotify() {
+    super.removeNotify();
+    chooser.onFileChoosed.unsubscribe(this::loadWorksheet);
+  }
 }

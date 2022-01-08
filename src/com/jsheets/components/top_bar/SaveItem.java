@@ -38,4 +38,10 @@ public class SaveItem extends JMenuItem {
       .getCellView()
       .toSerializableArray();
   }
+
+  @Override
+  public void removeNotify() {
+    super.removeNotify();
+    chooser.onFileChoosed.unsubscribe(this::saveWorksheet);
+  }
 }
