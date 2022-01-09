@@ -46,7 +46,10 @@ public class MainFrame extends JFrame {
   }
 
   private Worksheet createWorksheet() {
-    return new Worksheet(this::onCellSelected);
+    final var result = new Worksheet();
+    result.onCellSelected.subscribe(this::onCellSelected);
+
+    return result;
   }
 
   private void onCellSelected(CellSelectionEvent e) {
@@ -59,6 +62,14 @@ public class MainFrame extends JFrame {
   @Override
   public void removeNotify() {
     super.removeNotify();
+    ServiceRepository
+      .worksheetManager
+      .getAll()
+      .forEach(w -> w
+        .onCellSelected
+        .unsubscribe(this::onCellSelected)
+      );
+
     ServiceRepository
       .storageService
       .onWorksheetLoaded

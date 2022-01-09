@@ -1,7 +1,5 @@
 package com.jsheets.components.worksheet;
 
-import java.util.function.Consumer;
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -11,14 +9,14 @@ import com.jsheets.components.cells.CellSpan;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
+import com.jsheets.util.Event;
 
 public class Worksheet extends JTable {
-  private final Consumer<CellSelectionEvent> onCellSelected;
+  public final Event<CellSelectionEvent> onCellSelected = new Event<>();
   private final WorkSheetModel model;
 
-  public Worksheet(Consumer<CellSelectionEvent> onCellSelected) {
+  public Worksheet() {
     super(new WorkSheetModel());
-    this.onCellSelected = onCellSelected;
     this.model = (WorkSheetModel)getModel();
 
     initSelectionModel();
@@ -42,6 +40,10 @@ public class Worksheet extends JTable {
 
   private void initSelectionModel() {
     final var model = getSelectionModel();
+    getColumnModel()
+      .getSelectionModel()
+      .addListSelectionListener(this::handleCellSelection);
+
     model.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     model.addListSelectionListener(this::handleCellSelection);
     setCellSelectionEnabled(true);
@@ -52,7 +54,11 @@ public class Worksheet extends JTable {
     final var cols = getSelectedColumns();
     final var data = getSelectedCells(rows, cols);
 
-    onCellSelected.accept(
+    if (data.isEmpty()) {
+      return;
+    }
+
+    onCellSelected.fire(
       new CellSelectionEvent(data, rows, cols)
     );
   }

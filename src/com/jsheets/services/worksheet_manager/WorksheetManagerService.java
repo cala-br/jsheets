@@ -2,6 +2,7 @@ package com.jsheets.services.worksheet_manager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.jsheets.components.worksheet.Worksheet;
 
@@ -11,8 +12,8 @@ public class WorksheetManagerService {
   private int currentlyActive;
 
 
-  public List<Worksheet> getAll() {
-    return worksheets;
+  public Stream<Worksheet> getAll() {
+    return worksheets.stream();
   }
 
   public Worksheet getCurrentlyActive() {
