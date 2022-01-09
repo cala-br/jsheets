@@ -3,16 +3,26 @@ package com.jsheets.services.storage;
 import java.io.File;
 
 public class JSheetPath {
+  private static final String suffix = ".jsheet";
   private final File file;
 
+
   public JSheetPath(File file) {
-    this.file = file;
+    this(file.getAbsolutePath());
+  }
+
+  public JSheetPath(String path) {
+    this.file = path.endsWith(suffix)
+      ? new File(path)
+      : new File(path + suffix);
+  }
+
+  public boolean exists() {
+    return file.exists();
   }
 
   public String getPath() {
-    return file.exists()
-      ? file.getAbsolutePath()
-      : file.getAbsolutePath() + ".jsheet";
+    return file.getAbsolutePath();
   }
 
   public String getTitle() {

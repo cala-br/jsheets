@@ -6,6 +6,7 @@ import java.io.File;
 import javax.swing.JMenuItem;
 
 import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.components.dialogs.FileAlreadyExistsDialog;
 import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.SaveIcon;
 import com.jsheets.services.ServiceRepository;
@@ -26,6 +27,10 @@ public class SaveItem extends JMenuItem {
   }
 
   private void saveWorksheet(File f) {
+    if (!FileAlreadyExistsDialog.canFileBeSaved(new JSheetPath(f))) {
+      return;
+    }
+
     ServiceRepository.storageService.saveWorksheet(
       new JSheetPath(f),
       getSerializableCells()
