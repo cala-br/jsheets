@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.OpenFileIcon;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.JSheetPath;
+import com.jsheets.services.storage.JSheetFile;
 
 public class OpenFileItem extends JMenuItem {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
@@ -26,7 +26,7 @@ public class OpenFileItem extends JMenuItem {
   private void loadWorksheet(File f) {
     ServiceRepository
       .storageService
-      .loadWorksheet(new JSheetPath(f));
+      .loadWorksheet(new JSheetFile(f));
   }
 
   @Override

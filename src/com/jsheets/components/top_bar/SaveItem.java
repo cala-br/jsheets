@@ -10,7 +10,7 @@ import com.jsheets.components.dialogs.FileAlreadyExistsDialog;
 import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.SaveIcon;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.JSheetPath;
+import com.jsheets.services.storage.JSheetFile;
 
 public class SaveItem extends JMenuItem {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
@@ -27,12 +27,12 @@ public class SaveItem extends JMenuItem {
   }
 
   private void saveWorksheet(File f) {
-    if (!FileAlreadyExistsDialog.canFileBeSaved(new JSheetPath(f))) {
+    if (!FileAlreadyExistsDialog.canFileBeSaved(new JSheetFile(f))) {
       return;
     }
 
     ServiceRepository.storageService.saveWorksheet(
-      new JSheetPath(f),
+      new JSheetFile(f),
       getSerializableCells()
     );
   }

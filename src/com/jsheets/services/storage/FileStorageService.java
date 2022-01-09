@@ -1,6 +1,5 @@
 package com.jsheets.services.storage;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,8 +10,7 @@ import com.jsheets.components.cells.SerializableCell;
 
 public class FileStorageService extends StorageService {
   @Override
-  public void loadWorksheet(JSheetPath path) {
-    final var file = new File(path.getPath());
+  public void loadWorksheet(JSheetFile file) {
     try (
       final var fileIn = new FileInputStream(file);
       final var objIn = new ObjectInputStream(fileIn);
@@ -21,7 +19,7 @@ public class FileStorageService extends StorageService {
 
       if (raw instanceof SerializableCell[] cells) {
         onWorksheetLoaded.fire(
-          new WorksheetLoadedEvent(path, cells)
+          new WorksheetLoadedEvent(file, cells)
         );
       }
     }
@@ -31,15 +29,14 @@ public class FileStorageService extends StorageService {
   }
 
   @Override
-  public void saveWorksheet(JSheetPath path, SerializableCell[] cells) {
-    final var file = new File(path.getPath());
+  public void saveWorksheet(JSheetFile file, SerializableCell[] cells) {
     try (
       final var fileOut = new FileOutputStream(file);
       final var objOut = new ObjectOutputStream(fileOut);
     ) {
       objOut.writeObject(cells);
       onWorksheetSaved.fire(
-        new WorksheetSavedEvent(path)
+        new WorksheetSavedEvent(file)
       );
     }
     catch (IOException e) {

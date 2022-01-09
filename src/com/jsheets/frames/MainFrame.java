@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
   private void onWorksheetLoaded(WorksheetLoadedEvent e) {
     final var worksheet = createWorksheet();
     worksheet.loadSerializedCells(e.cells);
-    spreadsheet.add(e.path.getTitle(), worksheet);
+    spreadsheet.add(e.file.getTitle(), worksheet);
   }
 
   private Worksheet createWorksheet() {

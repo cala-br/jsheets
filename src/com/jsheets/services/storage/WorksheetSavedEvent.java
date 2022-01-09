@@ -1,9 +1,9 @@
 package com.jsheets.services.storage;
 
 public class WorksheetSavedEvent {
-  public final JSheetPath path;
+  public final JSheetFile file;
 
-  public WorksheetSavedEvent(JSheetPath path) {
-    this.path = path;
+  public WorksheetSavedEvent(JSheetFile file) {
+    this.file = file;
   }
 }

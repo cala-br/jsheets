@@ -1,11 +1,11 @@
 package com.jsheets.components.dialogs;
 
+import java.io.File;
+
 import javax.swing.JOptionPane;
 
-import com.jsheets.services.storage.JSheetPath;
-
 public class FileAlreadyExistsDialog {
-  public static boolean canFileBeSaved(JSheetPath path) {
+  public static boolean canFileBeSaved(File path) {
     if (!path.exists()) {
       return true;
     }
