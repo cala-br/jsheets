@@ -5,8 +5,8 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 public class FileAlreadyExistsDialog {
-  public static boolean canFileBeSaved(File path) {
-    if (!path.exists()) {
+  public static boolean canSave(File file) {
+    if (!file.exists()) {
       return true;
     }
 

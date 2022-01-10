@@ -1,6 +1,7 @@
 package com.jsheets.expressions.operands;
 
 import com.jsheets.components.cells.Cell;
+import com.jsheets.exceptions.ParseException;
 import com.jsheets.expressions.types.NumericExpression;
 
 public class CellExpression implements NumericExpression<Cell<?>> {
@@ -12,8 +13,13 @@ public class CellExpression implements NumericExpression<Cell<?>> {
 
   @Override
   public Number compute() {
-    return NumericConstant
-      .parse(cell.getValue())
-      .compute();
+    try {
+      return NumericConstant
+        .parse(cell.getValue())
+        .compute();
+    }
+    catch (Exception e) {
+      throw new ParseException();
+    }
   }
 }

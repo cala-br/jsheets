@@ -16,6 +16,10 @@ public class WorksheetManagerService {
     return worksheets.stream();
   }
 
+  public Worksheet getAt(int index) {
+    return worksheets.get(index);
+  }
+
   public Worksheet getCurrentlyActive() {
     return worksheets.get(currentlyActive);
   }

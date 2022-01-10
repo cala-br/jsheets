@@ -10,43 +10,57 @@ import com.jsheets.components.cells.CellSpan;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
+import com.jsheets.services.storage.JSheetFile;
 import com.jsheets.util.Event;
 
 public class Worksheet extends JTable {
   public final Event<CellSelectionEvent> onCellSelected = new Event<>();
+  public final Event<Cell<?>> onCellEdited;
   private final WorkSheetModel model;
 
+  private JSheetFile file = null;
   private boolean edited = false;
   public boolean hasBeenEdited() {
     return edited;
   }
 
-
-  public Worksheet() {
-    super(new WorkSheetModel());
-    this.model = (WorkSheetModel)getModel();
-    this.model
-      .onCellUpdated
-      .subscribe(this::onCellUpdated);
-
-    initSelectionModel();
+  public JSheetFile getFile() {
+    return file;
   }
 
+  public void setFile(JSheetFile file) {
+    this.file = file;
+  }
 
   public CellView getCellView() {
     return model.getView();
   }
 
 
-  public void loadSerializedCells(SerializableCell[] cells) {
+  public Worksheet(JSheetFile file, SerializableCell ...cells) {
+    this(cells);
+    setFile(file);
+  }
+
+  public Worksheet(SerializableCell ...cells) {
+    super(new WorkSheetModel());
+    this.model = (WorkSheetModel)getModel();
+    this.onCellEdited = model.onCellUpdated;
+    loadSerializedCells(cells);
+
+    model.onCellUpdated.subscribe(this::onCellUpdated);
+    initSelectionModel();
+  }
+
+
+  private void loadSerializedCells(SerializableCell[] cells) {
     for (final var cell : cells) {
       final var expr = cell.getExpression();
       final var pos = cell.getPosition();
 
-      model.setValueAt(expr, pos.row, pos.col);
+      setValueAt(expr, pos.row, pos.col);
     }
   }
-
 
   private void onCellUpdated(Cell<?> c) {
     edited = true;

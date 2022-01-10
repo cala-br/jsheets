@@ -1,53 +1,33 @@
 package com.jsheets.components.top_bar;
 
 
-import java.io.File;
-
 import javax.swing.JMenuItem;
 
-import com.jsheets.components.cells.SerializableCell;
-import com.jsheets.components.dialogs.FileAlreadyExistsDialog;
-import com.jsheets.components.dialogs.JSheetFileChooser;
+import com.jsheets.components.dialogs.JSheetFileSaver;
 import com.jsheets.components.icons.SaveIcon;
+import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.JSheetFile;
 
 public class SaveItem extends JMenuItem {
-  private final JSheetFileChooser chooser = new JSheetFileChooser();
-
   public SaveItem() {
     super();
     setText("Save");
     setIcon(new SaveIcon());
-    addActionListener(l -> chooser.showSaveDialog(null));
-
-    chooser
-      .onFileChoosed
-      .subscribe(this::saveWorksheet);
+    addActionListener(l -> save());
   }
 
-  private void saveWorksheet(File f) {
-    if (!FileAlreadyExistsDialog.canFileBeSaved(new JSheetFile(f))) {
-      return;
+  private void save() {
+    final var worksheet = getActiveWorksheet();
+    final var saver = new JSheetFileSaver(worksheet);
+
+    try (saver) {
+      saver.saveWithConfirmation();
     }
-
-    ServiceRepository.storageService.saveWorksheet(
-      new JSheetFile(f),
-      getSerializableCells()
-    );
   }
 
-  private SerializableCell[] getSerializableCells() {
+  private Worksheet getActiveWorksheet() {
     return ServiceRepository
       .worksheetManager
-      .getCurrentlyActive()
-      .getCellView()
-      .toSerializableArray();
-  }
-
-  @Override
-  public void removeNotify() {
-    super.removeNotify();
-    chooser.onFileChoosed.unsubscribe(this::saveWorksheet);
+      .getCurrentlyActive();
   }
 }

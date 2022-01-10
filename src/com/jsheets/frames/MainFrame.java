@@ -27,7 +27,9 @@ public class MainFrame extends JFrame {
     add(spreadsheet, BorderLayout.CENTER);
 
     spreadsheet.add(
-      createWorksheet()
+      addWorksheetHandlers(
+        new Worksheet()
+      )
     );
 
     ServiceRepository
@@ -40,16 +42,19 @@ public class MainFrame extends JFrame {
 
 
   private void onWorksheetLoaded(WorksheetLoadedEvent e) {
-    final var worksheet = createWorksheet();
-    worksheet.loadSerializedCells(e.cells);
-    spreadsheet.add(e.file.getTitle(), worksheet);
+    final var worksheet = addWorksheetHandlers(
+      new Worksheet(e.file, e.cells)
+    );
+
+    spreadsheet.add(worksheet);
   }
 
-  private Worksheet createWorksheet() {
-    final var result = new Worksheet();
-    result.onCellSelected.subscribe(this::onCellSelected);
+  private Worksheet addWorksheetHandlers(Worksheet worksheet) {
+    worksheet
+      .onCellSelected
+      .subscribe(this::onCellSelected);
 
-    return result;
+    return worksheet;
   }
 
   private void onCellSelected(CellSelectionEvent e) {
