@@ -93,6 +93,7 @@ public class Worksheet extends JTable {
 
   @Override
   public void removeNotify() {
+    super.removeNotify();
     model.onCellUpdated.unsubscribe(this::onCellUpdated);
   }
 }
