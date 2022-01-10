@@ -6,12 +6,16 @@ import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellFactory;
 import com.jsheets.components.cells.CellParams;
 import com.jsheets.components.cells.CellView;
+import com.jsheets.components.cells.ErrorCell;
 import com.jsheets.components.cells.ExpressionCell;
+import com.jsheets.util.Event;
 import com.jsheets.util.StringUtil;
 
 public class WorkSheetModel extends AbstractTableModel {
   private final static int columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length();
   private final static int rows = 100;
+
+  public final Event<Cell<?>> onCellUpdated = new Event<>();
   private final Cell<?>[][] cells = new Cell<?>[rows][columns];
 
   public CellView getView() {
@@ -51,19 +55,38 @@ public class WorkSheetModel extends AbstractTableModel {
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    final var expression = StringUtil.emptyIfNull(value);
-    cells[row][col] = createCell(expression, row, col);
-
-    recomputeExpressions();
+    final var cell = createCellAt(value, row, col);
+    recomputeExpressions(cell);
   }
 
-  private void recomputeExpressions() {
+  private void recomputeExpressions(Cell<?> excluded) {
     getView()
       .getAllWithValue()
-      .filter(c -> c instanceof ExpressionCell)
-      .forEach(c -> c.applyExpression(
-        c.getExpression()
-      ));
+      .filter(c -> (
+        c instanceof ExpressionCell ||
+        c instanceof ErrorCell
+      ))
+      .filter(c -> c != excluded)
+      .forEach(c -> {
+        recreateCell(c);
+      });
+  }
+
+  private Cell<?> recreateCell(Cell<?> cell) {
+    final var pos = cell.getPosition();
+    return createCellAt(
+      cell.getExpression(), pos.row, pos.col
+    );
+  }
+
+  private Cell<?> createCellAt(Object value, int row, int col) {
+    final var expression = StringUtil.emptyIfNull(value);
+    final var cell = createCell(expression, row, col);
+    cells[row][col] = cell;
+
+    onCellUpdated.fire(cell);
+    fireTableCellUpdated(row, col);
+    return cell;
   }
 
 

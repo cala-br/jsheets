@@ -44,6 +44,11 @@ public abstract class Cell<T> {
     applyExpression(expression);
   }
 
+
+  public void reapplyExpression() {
+    applyExpression(getExpression());
+  }
+
   public void applyExpression(String expression) {
     setExpression(expression);
     setValue(parse(expression));

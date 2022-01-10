@@ -4,6 +4,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
+import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellSelectionEvent;
 import com.jsheets.components.cells.CellSpan;
 import com.jsheets.components.cells.CellView;
@@ -15,9 +16,18 @@ public class Worksheet extends JTable {
   public final Event<CellSelectionEvent> onCellSelected = new Event<>();
   private final WorkSheetModel model;
 
+  private boolean edited = false;
+  public boolean hasBeenEdited() {
+    return edited;
+  }
+
+
   public Worksheet() {
     super(new WorkSheetModel());
     this.model = (WorkSheetModel)getModel();
+    this.model
+      .onCellUpdated
+      .subscribe(this::onCellUpdated);
 
     initSelectionModel();
   }
@@ -37,6 +47,10 @@ public class Worksheet extends JTable {
     }
   }
 
+
+  private void onCellUpdated(Cell<?> c) {
+    edited = true;
+  }
 
   private void initSelectionModel() {
     final var model = getSelectionModel();
@@ -74,5 +88,11 @@ public class Worksheet extends JTable {
     }
 
     return data;
+  }
+
+
+  @Override
+  public void removeNotify() {
+    model.onCellUpdated.unsubscribe(this::onCellUpdated);
   }
 }
