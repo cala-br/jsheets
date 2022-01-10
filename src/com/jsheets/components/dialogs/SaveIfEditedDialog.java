@@ -8,7 +8,7 @@ public class SaveIfEditedDialog {
       null,
       "The worksheet has been modified, do you want to save it?",
       "Exit without save",
-      JOptionPane.YES_NO_OPTION
+      JOptionPane.YES_NO_CANCEL_OPTION
     );
 
     return choice == JOptionPane.YES_OPTION;

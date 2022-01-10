@@ -72,17 +72,24 @@ public class Spreadsheet extends JTabbedPane {
     final var worksheet =
       worksheetManager.getAt(index);
 
-    maybeSave(worksheet);
+    askToSaveBeforeRemoving(worksheet);
     super.remove(index);
     worksheetManager.unregister(worksheet);
+    addNewWorksheetIfNoneRemain();
   }
 
-
-  private void maybeSave(Worksheet worksheet) {
+  private void askToSaveBeforeRemoving(Worksheet worksheet) {
     try (final var saver = new JSheetFileSaver(worksheet)) {
       saver.trySaveWithoutConfirmation();
     }
   }
+
+  private void addNewWorksheetIfNoneRemain() {
+    if (getTabCount() == 0) {
+      add(new Worksheet());
+    }
+  }
+
 
   private void refreshTabs() {
     for (int i = 0; i < getTabCount(); i++) {
