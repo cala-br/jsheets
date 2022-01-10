@@ -2,6 +2,8 @@ package com.jsheets.components.dialogs;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
+
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
@@ -17,27 +19,28 @@ public class JSheetFileSaver implements AutoCloseable {
   }
 
 
-  public boolean trySaveWithoutConfirmation() {
-    final var canSave =
-      worksheet.hasBeenEdited() &&
-      SaveIfEditedDialog.canSave();
+  public SaveDialogResult trySaveWithoutConfirmation() {
+    if (!worksheet.hasBeenEdited()) {
+      return SaveDialogResult.SAVED;
+    }
 
-    if (!canSave) {
-      return false;
+    final var saveIfEdited = SaveIfEditedDialog.canSave();
+    if (saveIfEdited != JOptionPane.OK_OPTION) {
+      return SaveDialogResult.fromJOption(saveIfEdited);
     }
 
     if (worksheet.getFile() == null) {
-      saveWithConfirmation();
-    }
-    else {
-      saveWorksheet();
+      return saveWithConfirmation();
     }
 
-    return true;
+    saveWorksheet();
+    return SaveDialogResult.SAVED;
   }
 
-  public void saveWithConfirmation() {
-    chooser.showSaveDialog(null);
+  public SaveDialogResult saveWithConfirmation() {
+    return SaveDialogResult.fromJChooserOption(
+      chooser.showSaveDialog(null)
+    );
   }
 
   private void saveChoosedFile(File file) {

@@ -7,6 +7,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 
 import com.jsheets.components.dialogs.JSheetFileSaver;
+import com.jsheets.components.dialogs.SaveDialogResult;
 import com.jsheets.components.worksheet.RowHeader;
 import com.jsheets.components.worksheet.TableScrollPane;
 import com.jsheets.components.worksheet.Worksheet;
@@ -72,15 +73,19 @@ public class Spreadsheet extends JTabbedPane {
     final var worksheet =
       worksheetManager.getAt(index);
 
-    askToSaveBeforeRemoving(worksheet);
+    final var saveResult = askToSaveBeforeRemoving(worksheet);
+    if (saveResult == SaveDialogResult.CANCELED) {
+      return;
+    }
+
     super.remove(index);
     worksheetManager.unregister(worksheet);
     addNewWorksheetIfNoneRemain();
   }
 
-  private void askToSaveBeforeRemoving(Worksheet worksheet) {
+  private SaveDialogResult askToSaveBeforeRemoving(Worksheet worksheet) {
     try (final var saver = new JSheetFileSaver(worksheet)) {
-      saver.trySaveWithoutConfirmation();
+      return saver.trySaveWithoutConfirmation();
     }
   }
 
