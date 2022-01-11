@@ -8,8 +8,7 @@ import com.jsheets.components.worksheet.Worksheet;
 
 public class WorksheetManagerService {
   private final List<Worksheet> worksheets = new ArrayList<>();
-
-  private int currentlyActive;
+  private int currentlyActive = -1;
 
 
   public Stream<Worksheet> getAll() {
