@@ -10,6 +10,7 @@ import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
+import com.jsheets.services.storage.JSheetFile;
 import com.jsheets.services.storage.WorksheetLoadedEvent;
 
 public class MainFrame extends JFrame {
@@ -42,11 +43,23 @@ public class MainFrame extends JFrame {
 
 
   private void onWorksheetLoaded(WorksheetLoadedEvent e) {
+    if (isAlreadyOpen(e.file)) {
+      return;
+    }
+
     final var worksheet = addWorksheetHandlers(
       new Worksheet(e.file, e.cells)
     );
 
     spreadsheet.add(worksheet);
+  }
+
+  private boolean isAlreadyOpen(JSheetFile file) {
+    return ServiceRepository
+      .worksheetManager
+      .getAll()
+      .filter(w -> w.getFile() != null)
+      .anyMatch(w -> file.compareTo(w.getFile()) == 0);
   }
 
   private Worksheet addWorksheetHandlers(Worksheet worksheet) {
