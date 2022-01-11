@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import com.jsheets.cells.CellSpan;
 import com.jsheets.cells.CellView;
 import com.jsheets.cells.SerializableCell;
+import com.jsheets.events.CellEditedEvent;
 import com.jsheets.events.CellSelectionEvent;
 import com.jsheets.events.CellUpdatedEvent;
 import com.jsheets.events.Event;
@@ -19,7 +20,7 @@ import com.jsheets.services.storage.WorksheetSavedEvent;
 
 public class Worksheet extends JTable {
   public final Event<CellSelectionEvent> onCellSelected = new Event<>();
-  public final Event<CellUpdatedEvent> onCellEdited;
+  public final Event<CellEditedEvent> onCellEdited = new Event<>();
   private final WorkSheetModel model;
 
   private JSheetFile file = null;
@@ -63,7 +64,6 @@ public class Worksheet extends JTable {
     }
 
     this.model = (WorkSheetModel)getModel();
-    this.onCellEdited = model.onCellUpdated;
     loadSerializedCells(cells);
 
     model.onCellUpdated.subscribe(this::onCellUpdated);
@@ -87,6 +87,9 @@ public class Worksheet extends JTable {
 
   private void onCellUpdated(CellUpdatedEvent e) {
     edited = true;
+    onCellEdited.fire(
+      new CellEditedEvent(this, e.cell)
+    );
   }
 
   private void initSelectionModel() {
