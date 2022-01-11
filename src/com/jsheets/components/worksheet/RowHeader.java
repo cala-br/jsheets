@@ -1,4 +1,4 @@
-package com.jsheets.components.work_sheet;
+package com.jsheets.components.worksheet;
 
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -19,6 +19,6 @@ public class RowHeader extends JList<String> {
     setCellRenderer(new RowHeaderRenderer(table));
 
     pane.setRowHeaderView(this);
-    table.setAutoResizeMode(WorkSheet.AUTO_RESIZE_OFF);
+    table.setAutoResizeMode(Worksheet.AUTO_RESIZE_OFF);
   }
 }

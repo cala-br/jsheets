@@ -1,4 +1,4 @@
-package com.jsheets.components.work_sheet;
+package com.jsheets.components.worksheet;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;

@@ -1,5 +1,7 @@
 package com.jsheets.components.cells;
 
+import com.jsheets.util.NumberUtil;
+
 public enum CellKind {
   NUMERIC,
   TEXT,
@@ -7,14 +9,9 @@ public enum CellKind {
   ERROR;
 
   public static CellKind fromExpression(String expression) {
-    return fromChar(expression.charAt(0));
-  }
-
-  public static CellKind fromChar(char c) {
     return (
-      Character.isDigit(c)  ? NUMERIC :
-      Character.isLetter(c) ? TEXT :
-      c == '='              ? EXPRESSION : ERROR
+      NumberUtil.isNumber(expression) ? NUMERIC :
+      expression.startsWith("=") ? EXPRESSION : TEXT
     );
   }
 }

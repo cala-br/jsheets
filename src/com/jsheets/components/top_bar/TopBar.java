@@ -4,6 +4,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import com.jsheets.components.icons.CopyIcon;
+import com.jsheets.components.icons.CutIcon;
+import com.jsheets.components.icons.PasteIcon;
+
 public class TopBar extends JMenuBar {
   public TopBar() {
     super();
@@ -14,16 +18,16 @@ public class TopBar extends JMenuBar {
 
   private JMenu createFileMenu() {
     return new MenuTab("File",
-      new JMenuItem("Save"),
-      new JMenuItem("Open")
+      new SaveItem(),
+      new OpenFileItem()
     );
   }
 
   private JMenu createEditMenu() {
     return new MenuTab("Edit",
-      new JMenuItem("Cut"),
-      new JMenuItem("Copy"),
-      new JMenuItem("Paste")
+      new JMenuItem("Cut", new CutIcon()),
+      new JMenuItem("Copy", new CopyIcon()),
+      new JMenuItem("Paste", new PasteIcon())
     );
   }
 }

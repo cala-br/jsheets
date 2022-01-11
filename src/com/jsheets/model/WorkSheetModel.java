@@ -6,22 +6,20 @@ import com.jsheets.components.cells.Cell;
 import com.jsheets.components.cells.CellFactory;
 import com.jsheets.components.cells.CellParams;
 import com.jsheets.components.cells.CellView;
+import com.jsheets.components.cells.ErrorCell;
+import com.jsheets.components.cells.ExpressionCell;
+import com.jsheets.util.Event;
 import com.jsheets.util.StringUtil;
 
 public class WorkSheetModel extends AbstractTableModel {
   private final static int columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length();
   private final static int rows = 100;
 
-  private final Cell<?>[][] cells;
+  public final Event<Cell<?>> onCellUpdated = new Event<>();
+  private final Cell<?>[][] cells = new Cell<?>[rows][columns];
 
   public CellView getView() {
     return new CellView(cells);
-  }
-
-
-  public WorkSheetModel() {
-    super();
-    cells = new Cell<?>[rows][columns];
   }
 
 
@@ -42,12 +40,12 @@ public class WorkSheetModel extends AbstractTableModel {
 
   @Override
   public int getRowCount() {
-    return cells.length;
+    return rows;
   }
 
   @Override
   public int getColumnCount() {
-    return cells[0].length;
+    return columns;
   }
 
   @Override
@@ -57,9 +55,40 @@ public class WorkSheetModel extends AbstractTableModel {
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    final var expression = StringUtil.emptyIfNull(value);
-    cells[row][col] = createCell(expression, row, col);
+    final var cell = createCellAt(value, row, col);
+    recomputeExpressions(cell);
   }
+
+  private void recomputeExpressions(Cell<?> excluded) {
+    getView()
+      .getAllWithValue()
+      .filter(c -> (
+        c instanceof ExpressionCell ||
+        c instanceof ErrorCell
+      ))
+      .filter(c -> c != excluded)
+      .forEach(c -> {
+        recreateCell(c);
+      });
+  }
+
+  private Cell<?> recreateCell(Cell<?> cell) {
+    final var pos = cell.getPosition();
+    return createCellAt(
+      cell.getExpression(), pos.row, pos.col
+    );
+  }
+
+  private Cell<?> createCellAt(Object value, int row, int col) {
+    final var expression = StringUtil.emptyIfNull(value);
+    final var cell = createCell(expression, row, col);
+    cells[row][col] = cell;
+
+    onCellUpdated.fire(cell);
+    fireTableCellUpdated(row, col);
+    return cell;
+  }
+
 
   private Cell<?> createCell(String expression, int row, int col) {
     return CellFactory.create(

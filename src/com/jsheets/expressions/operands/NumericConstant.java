@@ -1,5 +1,6 @@
 package com.jsheets.expressions.operands;
 
+import com.jsheets.exceptions.ParseException;
 import com.jsheets.expressions.types.ConstantExpression;
 import com.jsheets.expressions.types.NumericExpression;
 
@@ -8,11 +9,16 @@ public class NumericConstant extends ConstantExpression<Number> implements Numer
     super(value);
   }
 
-  public static NumericConstant parse(Object constant) {
-    return new NumericConstant(
-      Double.parseDouble(
-        String.valueOf(constant)
-      )
-    );
+  public static NumericConstant parse(Object constant) throws ParseException {
+    try {
+      return new NumericConstant(
+        Double.parseDouble(
+          String.valueOf(constant)
+        )
+      );
+    }
+    catch (NumberFormatException e) {
+      throw new ParseException();
+    }
   }
 }

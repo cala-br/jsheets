@@ -1,19 +1,26 @@
 package com.jsheets.components.contextual_actions;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JTextField;
 
 import com.jsheets.components.cells.CellPosition;
 
-public class CellSpan extends JTextField {
-  public CellSpan() {
+public class SelectedCellsField extends JTextField {
+  public SelectedCellsField() {
     super();
     setColumns(7);
     setHorizontalAlignment(CENTER);
     setEnabled(false);
     setDisabledTextColor(Color.BLACK);
+    makeBoxLayoutRespectSize();
   }
+
+  private void makeBoxLayoutRespectSize() {
+    setMaximumSize(new Dimension(100, 100));
+  }
+
 
   public void updateText(int[] rows, int[] cols) {
     final var firstCell = new CellPosition(rows[0], cols[0]);
