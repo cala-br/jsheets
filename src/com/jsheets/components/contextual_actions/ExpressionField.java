@@ -2,7 +2,7 @@ package com.jsheets.components.contextual_actions;
 
 import javax.swing.JTextField;
 
-import com.jsheets.components.cells.CellSelectionEvent;
+import com.jsheets.cells.CellSelectionEvent;
 import com.jsheets.components.misc.EnterKeyAdapter;
 import com.jsheets.services.ServiceRepository;
 

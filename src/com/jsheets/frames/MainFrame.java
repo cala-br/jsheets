@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import com.jsheets.components.cells.CellSelectionEvent;
+import com.jsheets.cells.CellSelectionEvent;
 import com.jsheets.components.contextual_actions.ContextualActions;
 import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;

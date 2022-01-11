@@ -7,7 +7,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import com.jsheets.components.cells.CellSelectionEvent;
+import com.jsheets.cells.CellSelectionEvent;
 import com.jsheets.components.icons.FunctionIcon;
 
 public class ContextualActions extends JPanel {

@@ -1,4 +1,4 @@
-package com.jsheets.components.cells;
+package com.jsheets.cells;
 
 import java.util.stream.Stream;
 
