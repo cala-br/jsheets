@@ -1,6 +1,6 @@
 package com.jsheets.events;
 
-import com.jsheets.components.cells.CellSpan;
+import com.jsheets.cells.CellSpan;
 import com.jsheets.components.worksheet.Worksheet;
 
 public class CellSelectionEvent extends EventArgs<Worksheet> {

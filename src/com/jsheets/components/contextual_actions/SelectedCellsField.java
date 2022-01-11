@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JTextField;
 
-import com.jsheets.components.cells.CellPosition;
+import com.jsheets.cells.CellPosition;
 
 public class SelectedCellsField extends JTextField {
   public SelectedCellsField() {

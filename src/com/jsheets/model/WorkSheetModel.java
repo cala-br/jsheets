@@ -2,12 +2,12 @@ package com.jsheets.model;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.jsheets.components.cells.Cell;
-import com.jsheets.components.cells.CellFactory;
-import com.jsheets.components.cells.CellParams;
-import com.jsheets.components.cells.CellView;
-import com.jsheets.components.cells.ErrorCell;
-import com.jsheets.components.cells.ExpressionCell;
+import com.jsheets.cells.Cell;
+import com.jsheets.cells.CellFactory;
+import com.jsheets.cells.CellParams;
+import com.jsheets.cells.CellView;
+import com.jsheets.cells.ErrorCell;
+import com.jsheets.cells.ExpressionCell;
 import com.jsheets.events.CellUpdatedEvent;
 import com.jsheets.events.Event;
 import com.jsheets.util.StringUtil;

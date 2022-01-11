@@ -1,6 +1,6 @@
 package com.jsheets.services.storage;
 
-import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.cells.SerializableCell;
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.events.Event;
 

@@ -1,4 +1,4 @@
-package com.jsheets.components.cells;
+package com.jsheets.cells;
 
 public class TextCell extends Cell<String> {
   public TextCell(CellParams params) {

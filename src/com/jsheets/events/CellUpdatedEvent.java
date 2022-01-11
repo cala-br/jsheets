@@ -1,6 +1,6 @@
 package com.jsheets.events;
 
-import com.jsheets.components.cells.Cell;
+import com.jsheets.cells.Cell;
 import com.jsheets.model.WorkSheetModel;
 
 public class CellUpdatedEvent extends EventArgs<WorkSheetModel> {

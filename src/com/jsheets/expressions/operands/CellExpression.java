@@ -1,6 +1,6 @@
 package com.jsheets.expressions.operands;
 
-import com.jsheets.components.cells.Cell;
+import com.jsheets.cells.Cell;
 import com.jsheets.exceptions.ParseException;
 import com.jsheets.expressions.types.NumericExpression;
 

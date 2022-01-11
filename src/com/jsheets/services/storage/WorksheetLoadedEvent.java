@@ -1,6 +1,6 @@
 package com.jsheets.services.storage;
 
-import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.cells.SerializableCell;
 import com.jsheets.events.EventArgs;
 
 public class WorksheetLoadedEvent extends EventArgs<StorageService> {

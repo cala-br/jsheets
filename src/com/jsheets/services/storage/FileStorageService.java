@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.cells.SerializableCell;
 
 public class FileStorageService extends StorageService {
   @Override

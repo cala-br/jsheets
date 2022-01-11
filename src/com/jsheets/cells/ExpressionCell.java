@@ -1,4 +1,4 @@
-package com.jsheets.components.cells;
+package com.jsheets.cells;
 
 import com.jsheets.exceptions.ParseException;
 import com.jsheets.expressions.ExpressionTree;

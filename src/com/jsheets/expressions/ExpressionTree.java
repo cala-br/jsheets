@@ -3,7 +3,7 @@ package com.jsheets.expressions;
 import java.util.List;
 import java.util.Stack;
 
-import com.jsheets.components.cells.CellView;
+import com.jsheets.cells.CellView;
 import com.jsheets.exceptions.ParseException;
 
 public class ExpressionTree {
