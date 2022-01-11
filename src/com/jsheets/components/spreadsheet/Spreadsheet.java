@@ -2,6 +2,8 @@ package com.jsheets.components.spreadsheet;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -11,13 +13,14 @@ import com.jsheets.components.dialogs.SaveDialogResult;
 import com.jsheets.components.worksheet.RowHeader;
 import com.jsheets.components.worksheet.TableScrollPane;
 import com.jsheets.components.worksheet.Worksheet;
+import com.jsheets.events.CellEditedEvent;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.WorksheetSavedEvent;
 import com.jsheets.services.worksheet_manager.WorksheetManagerService;
 
 public class Spreadsheet extends JTabbedPane {
-  private final WorksheetManagerService worksheetManager =
-    ServiceRepository.worksheetManager;
+  private final WorksheetManagerService worksheetManager = ServiceRepository.worksheetManager;
+  private final Map<Worksheet, Component> componentsMap = new HashMap<>();
 
   public Spreadsheet() {
     super();
@@ -64,10 +67,9 @@ public class Spreadsheet extends JTabbedPane {
     final var wrappedSheet =
       wrapWorksheet(worksheet);
 
+    componentsMap.put(worksheet, wrappedSheet);
     worksheetManager.register(worksheet);
-    worksheet.onCellEdited.subscribe(c -> {
-      setEdited(wrappedSheet);
-    });
+    worksheet.onCellEdited.subscribe(this::setEdited);
 
     addTab(title, wrappedSheet);
     refreshTabs();
@@ -81,13 +83,6 @@ public class Spreadsheet extends JTabbedPane {
     );
   }
 
-  private void setEdited(Component component) {
-    final var i = indexOfComponent(component);
-    final var t = getTitleAt(i);
-    if (!t.endsWith("*")) {
-      setTitleAt(i, t + "*");
-    }
-  }
 
   @Override
   public void remove(int index) {
@@ -100,9 +95,23 @@ public class Spreadsheet extends JTabbedPane {
     }
 
     super.remove(index);
+
+    worksheet.onCellEdited.subscribe(this::setEdited);
     worksheetManager.unregister(worksheet);
+    componentsMap.remove(worksheet);
+
     addNewWorksheetIfNoneRemain();
   }
+
+  private void setEdited(CellEditedEvent e) {
+    final var c = componentsMap.get(e.sender);
+    final var i = indexOfComponent(c);
+    final var t = getTitleAt(i);
+    if (!t.endsWith("*")) {
+      setTitleAt(i, t + "*");
+    }
+  }
+
 
   private SaveDialogResult askToSaveBeforeRemoving(Worksheet worksheet) {
     try (final var saver = new JSheetFileSaver(worksheet)) {
