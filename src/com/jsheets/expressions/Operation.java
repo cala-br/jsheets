@@ -50,11 +50,17 @@ public class Operation {
     final var right = memo.pop();
     final var left = memo.pop();
 
-    if (left instanceof NumericExpression<?> l && right instanceof NumericExpression<?> r) {
-      return numericOperation(l, r);
+    if (left instanceof NumericExpression<?> && right instanceof NumericExpression<?>) {
+      return numericOperation(
+        (NumericExpression<?>)left,
+        (NumericExpression<?>)right
+      );
     }
-    else if (left instanceof BooleanExpression<?> l && right instanceof BooleanExpression<?> r) {
-      return booleanOperation(l, r);
+    else if (left instanceof BooleanExpression<?> && right instanceof BooleanExpression<?>) {
+      return booleanOperation(
+        (BooleanExpression<?>)left,
+        (BooleanExpression<?>)right
+      );
     }
 
     throw new ParseException();
@@ -63,8 +69,10 @@ public class Operation {
   private Expression<?, ?> createUnaryExpression() {
     final var operand = memo.pop();
 
-    if (operand instanceof BooleanExpression<?> o) {
-      return booleanOperation(o, null);
+    if (operand instanceof BooleanExpression<?>) {
+      return booleanOperation(
+        (BooleanExpression<?>)operand, null
+      );
     }
 
     throw new ParseException();

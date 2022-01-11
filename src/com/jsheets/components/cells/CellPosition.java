@@ -16,8 +16,8 @@ public class CellPosition {
 
   @Override
   public boolean equals(Object o) {
-    return o instanceof CellPosition p
-      ? p.isAt(row, col)
+    return o instanceof CellPosition
+      ? ((CellPosition)o).isAt(row, col)
       : false;
   }
 
