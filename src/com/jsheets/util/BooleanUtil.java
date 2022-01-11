@@ -2,9 +2,10 @@ package com.jsheets.util;
 
 public class BooleanUtil {
   public static boolean isBoolean(String raw) {
-    return switch (raw) {
-      case "true", "false" -> true;
-      default -> false;
-    };
+    switch (raw) {
+      case "true":
+      case "false": return true;
+      default: return false;
+    }
   }
 }

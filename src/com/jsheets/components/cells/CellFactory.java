@@ -11,12 +11,12 @@ public class CellFactory {
 
     try {
       final var kind = CellKind.fromExpression(p.expression);
-      return switch (kind) {
-        case NUMERIC    -> new NumericCell(p);
-        case TEXT       -> new TextCell(p);
-        case EXPRESSION -> new ExpressionCell(p);
-        case ERROR      -> new ErrorCell(p);
-      };
+      switch (kind) {
+        case NUMERIC: return new NumericCell(p);
+        case TEXT: return new TextCell(p);
+        case EXPRESSION: return new ExpressionCell(p);
+        default: return new ErrorCell(p);
+      }
     }
     catch (ParseException e) {
       return new ErrorCell(p);
