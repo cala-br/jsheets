@@ -32,6 +32,11 @@ public class JSheetFileSaver implements AutoCloseable {
       return SaveDialogResult.fromJOption(saveIfEdited);
     }
 
+    return trySaveSilently();
+  }
+
+
+  public SaveDialogResult trySaveSilently() {
     if (!worksheet.hasBeenSaved()) {
       return saveWithConfirmation();
     }
@@ -39,6 +44,7 @@ public class JSheetFileSaver implements AutoCloseable {
     saveWorksheet();
     return SaveDialogResult.SAVED;
   }
+
 
   public SaveDialogResult saveWithConfirmation() {
     return SaveDialogResult.fromJChooserOption(

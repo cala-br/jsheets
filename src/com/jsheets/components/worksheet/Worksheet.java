@@ -12,7 +12,9 @@ import com.jsheets.components.cells.CellSpan;
 import com.jsheets.components.cells.CellView;
 import com.jsheets.components.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
+import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
+import com.jsheets.services.storage.WorksheetSavedEvent;
 import com.jsheets.util.Event;
 
 public class Worksheet extends JTable {
@@ -66,6 +68,11 @@ public class Worksheet extends JTable {
 
     model.onCellUpdated.subscribe(this::onCellUpdated);
     initSelectionModel();
+
+    ServiceRepository
+      .storageService
+      .onWorksheetSaved
+      .subscribe(this::onSave);
   }
 
 
@@ -121,9 +128,20 @@ public class Worksheet extends JTable {
   }
 
 
+  private void onSave(WorksheetSavedEvent e) {
+    if (e.file.compareTo(file) == 0) {
+      edited = false;
+    }
+  }
+
+
   @Override
   public void removeNotify() {
     super.removeNotify();
     model.onCellUpdated.unsubscribe(this::onCellUpdated);
+    ServiceRepository
+      .storageService
+      .onWorksheetSaved
+      .unsubscribe(this::onSave);
   }
 }

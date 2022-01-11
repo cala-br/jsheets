@@ -21,7 +21,7 @@ public class SaveItem extends JMenuItem {
     final var saver = new JSheetFileSaver(worksheet);
 
     try (saver) {
-      saver.saveWithConfirmation();
+      saver.trySaveSilently();
     }
   }
 

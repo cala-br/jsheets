@@ -12,6 +12,7 @@ import com.jsheets.components.worksheet.RowHeader;
 import com.jsheets.components.worksheet.TableScrollPane;
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
+import com.jsheets.services.storage.WorksheetSavedEvent;
 import com.jsheets.services.worksheet_manager.WorksheetManagerService;
 
 public class Spreadsheet extends JTabbedPane {
@@ -21,12 +22,32 @@ public class Spreadsheet extends JTabbedPane {
   public Spreadsheet() {
     super();
     addChangeListener(this::onTabChanged);
+
+    ServiceRepository
+      .storageService
+      .onWorksheetSaved
+      .subscribe(this::onWorksheetSaved);
   }
 
 
   private void onTabChanged(ChangeEvent e) {
     final var selectedIndex = getSelectedIndex();
     worksheetManager.setActive(selectedIndex);
+  }
+
+
+  private void onWorksheetSaved(WorksheetSavedEvent e) {
+    final var saved = worksheetManager
+      .getAll()
+      .filter(w -> e.file.compareTo(w.getFile()) == 0)
+      .findFirst();
+
+    if (saved.isPresent()) {
+      setTitleAt(
+        worksheetManager.indexOf(saved.get()),
+        e.file.getTitle()
+      );
+    }
   }
 
 

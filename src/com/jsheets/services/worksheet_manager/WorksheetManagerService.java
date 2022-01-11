@@ -23,6 +23,10 @@ public class WorksheetManagerService {
     return worksheets.get(currentlyActive);
   }
 
+  public int indexOf(Worksheet w) {
+    return worksheets.indexOf(w);
+  }
+
 
   public void register(Worksheet w) {
     worksheets.add(w);
