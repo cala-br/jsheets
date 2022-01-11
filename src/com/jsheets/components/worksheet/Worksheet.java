@@ -6,11 +6,11 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
-import com.jsheets.components.cells.Cell;
-import com.jsheets.components.cells.CellSelectionEvent;
-import com.jsheets.components.cells.CellSpan;
-import com.jsheets.components.cells.CellView;
-import com.jsheets.components.cells.SerializableCell;
+import com.jsheets.cells.Cell;
+import com.jsheets.cells.CellSelectionEvent;
+import com.jsheets.cells.CellSpan;
+import com.jsheets.cells.CellView;
+import com.jsheets.cells.SerializableCell;
 import com.jsheets.model.WorkSheetModel;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;

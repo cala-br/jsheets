@@ -1,4 +1,4 @@
-package com.jsheets.components.cells;
+package com.jsheets.cells;
 
 public class CellSelectionEvent {
   public final CellSpan data;

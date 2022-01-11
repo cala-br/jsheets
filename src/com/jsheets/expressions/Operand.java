@@ -1,7 +1,7 @@
 package com.jsheets.expressions;
 
-import com.jsheets.components.cells.CellPosition;
-import com.jsheets.components.cells.CellView;
+import com.jsheets.cells.CellPosition;
+import com.jsheets.cells.CellView;
 import com.jsheets.exceptions.ParseException;
 import com.jsheets.expressions.operands.BooleanConstant;
 import com.jsheets.expressions.operands.CellExpression;
