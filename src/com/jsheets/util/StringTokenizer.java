@@ -3,6 +3,7 @@ package com.jsheets.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StringTokenizer {
   public static List<String> splitKeepingTokens(
@@ -29,7 +30,7 @@ public class StringTokenizer {
           ? List.of(e).stream()
           : splitKeepingToken(e, delimiter).stream();
       })
-      .toList();
+      .collect(Collectors.toList());
   }
 
   public static List<String> splitKeepingToken(String expression, String token) {
