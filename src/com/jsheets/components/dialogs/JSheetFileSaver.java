@@ -14,7 +14,10 @@ public class JSheetFileSaver implements AutoCloseable {
 
   public JSheetFileSaver(Worksheet worksheet) {
     this.worksheet = worksheet;
-    chooser.setSelectedFile(worksheet.getFile());
+    if (worksheet.hasBeenSaved()) {
+      chooser.setSelectedFile(worksheet.getFile());
+    }
+
     chooser.onFileChoosed.subscribe(this::saveChoosedFile);
   }
 
@@ -29,7 +32,7 @@ public class JSheetFileSaver implements AutoCloseable {
       return SaveDialogResult.fromJOption(saveIfEdited);
     }
 
-    if (worksheet.getFile() == null) {
+    if (!worksheet.hasBeenSaved()) {
       return saveWithConfirmation();
     }
 

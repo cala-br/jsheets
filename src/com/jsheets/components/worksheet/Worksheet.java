@@ -1,5 +1,7 @@
 package com.jsheets.components.worksheet;
 
+import java.io.File;
+
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -24,6 +26,10 @@ public class Worksheet extends JTable {
     return edited;
   }
 
+  public boolean hasBeenSaved() {
+    return file != null && !file.isTemporary();
+  }
+
   public JSheetFile getFile() {
     return file;
   }
@@ -44,6 +50,16 @@ public class Worksheet extends JTable {
 
   public Worksheet(SerializableCell ...cells) {
     super(new WorkSheetModel());
+
+    try {
+      this.file = new JSheetFile(
+        File.createTempFile("tmp-", ".new")
+      );
+    }
+    catch (Exception e) {
+      this.file = null;
+    }
+
     this.model = (WorkSheetModel)getModel();
     this.onCellEdited = model.onCellUpdated;
     loadSerializedCells(cells);
