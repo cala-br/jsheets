@@ -1,12 +1,10 @@
 package com.jsheets.components.dialogs;
 
-import java.io.File;
-
 import javax.swing.JOptionPane;
 
 import com.jsheets.components.worksheet.Worksheet;
+import com.jsheets.events.FileChoosedEvent;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.JSheetFile;
 
 public class JSheetFileSaver implements AutoCloseable {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
@@ -52,13 +50,12 @@ public class JSheetFileSaver implements AutoCloseable {
     );
   }
 
-  private void saveChoosedFile(File file) {
-    final var jfile = new JSheetFile(file);
-    if (!FileAlreadyExistsDialog.canSave(jfile)) {
+  private void saveChoosedFile(FileChoosedEvent e) {
+    if (!FileAlreadyExistsDialog.canSave(e.file)) {
       return;
     }
 
-    worksheet.setFile(jfile);
+    worksheet.setFile(e.file);
     saveWorksheet();
   }
 

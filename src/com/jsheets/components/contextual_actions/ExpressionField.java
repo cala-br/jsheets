@@ -2,8 +2,9 @@ package com.jsheets.components.contextual_actions;
 
 import javax.swing.JTextField;
 
-import com.jsheets.cells.CellSelectionEvent;
 import com.jsheets.components.misc.EnterKeyAdapter;
+import com.jsheets.events.CellSelectionEvent;
+import com.jsheets.events.EventArgs;
 import com.jsheets.services.ServiceRepository;
 
 public class ExpressionField extends JTextField {
@@ -27,7 +28,7 @@ public class ExpressionField extends JTextField {
   }
 
 
-  private void onEnterPressed() {
+  private void onEnterPressed(EventArgs<EnterKeyAdapter> e) {
     if (currentEvent == null || !currentEvent.hasSingleCell) {
       return;
     }

@@ -5,6 +5,7 @@ import javax.swing.Timer;
 import com.jsheets.components.dialogs.ErrorDialog;
 import com.jsheets.frames.MainFrame;
 import com.jsheets.services.ServiceRepository;
+import com.jsheets.services.storage.StorageExceptionEvent;
 
 public class JSheets {
   public static void main(String[] args) {
@@ -12,7 +13,7 @@ public class JSheets {
     ServiceRepository
       .storageService
       .onException
-      .subscribe(ErrorDialog::show);
+      .subscribe(JSheets::handleStorageException);
 
     Runtime
       .getRuntime()
@@ -24,11 +25,17 @@ public class JSheets {
     setupAutosave();
   }
 
+
+  private static void handleStorageException(StorageExceptionEvent e) {
+    ErrorDialog.show(e.exception);
+  }
+
+
   private static void cleanup() {
     ServiceRepository
       .storageService
       .onException
-      .unsubscribe(ErrorDialog::show);
+      .unsubscribe(JSheets::handleStorageException);
   }
 
   private static void setupAutosave() {

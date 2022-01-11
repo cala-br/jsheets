@@ -8,14 +8,15 @@ import com.jsheets.cells.CellParams;
 import com.jsheets.cells.CellView;
 import com.jsheets.cells.ErrorCell;
 import com.jsheets.cells.ExpressionCell;
-import com.jsheets.util.Event;
+import com.jsheets.events.CellUpdatedEvent;
+import com.jsheets.events.Event;
 import com.jsheets.util.StringUtil;
 
 public class WorkSheetModel extends AbstractTableModel {
   private final static int columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length();
   private final static int rows = 100;
 
-  public final Event<Cell<?>> onCellUpdated = new Event<>();
+  public final Event<CellUpdatedEvent> onCellUpdated = new Event<>();
   private final Cell<?>[][] cells = new Cell<?>[rows][columns];
 
   public CellView getView() {
@@ -84,7 +85,10 @@ public class WorkSheetModel extends AbstractTableModel {
     final var cell = createCell(expression, row, col);
     cells[row][col] = cell;
 
-    onCellUpdated.fire(cell);
+    onCellUpdated.fire(
+      new CellUpdatedEvent(this, cell)
+    );
+
     fireTableCellUpdated(row, col);
     return cell;
   }

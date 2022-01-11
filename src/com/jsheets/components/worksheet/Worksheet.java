@@ -6,20 +6,20 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
-import com.jsheets.cells.Cell;
-import com.jsheets.cells.CellSelectionEvent;
 import com.jsheets.cells.CellSpan;
 import com.jsheets.cells.CellView;
 import com.jsheets.cells.SerializableCell;
+import com.jsheets.events.CellSelectionEvent;
+import com.jsheets.events.CellUpdatedEvent;
+import com.jsheets.events.Event;
 import com.jsheets.model.WorkSheetModel;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
 import com.jsheets.services.storage.WorksheetSavedEvent;
-import com.jsheets.util.Event;
 
 public class Worksheet extends JTable {
   public final Event<CellSelectionEvent> onCellSelected = new Event<>();
-  public final Event<Cell<?>> onCellEdited;
+  public final Event<CellUpdatedEvent> onCellEdited;
   private final WorkSheetModel model;
 
   private JSheetFile file = null;
@@ -85,7 +85,7 @@ public class Worksheet extends JTable {
     }
   }
 
-  private void onCellUpdated(Cell<?> c) {
+  private void onCellUpdated(CellUpdatedEvent e) {
     edited = true;
   }
 
@@ -110,7 +110,7 @@ public class Worksheet extends JTable {
     }
 
     onCellSelected.fire(
-      new CellSelectionEvent(data, rows, cols)
+      new CellSelectionEvent(this, data, rows, cols)
     );
   }
 

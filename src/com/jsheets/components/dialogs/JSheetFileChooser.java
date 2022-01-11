@@ -7,10 +7,12 @@ import java.util.function.Supplier;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.jsheets.util.Event;
+import com.jsheets.events.Event;
+import com.jsheets.events.FileChoosedEvent;
+import com.jsheets.services.storage.JSheetFile;
 
 public class JSheetFileChooser extends JFileChooser {
-  public final Event<File> onFileChoosed = new Event<>();
+  public final Event<FileChoosedEvent> onFileChoosed = new Event<>();
 
   public JSheetFileChooser() {
     super();
@@ -41,7 +43,7 @@ public class JSheetFileChooser extends JFileChooser {
   private void maybeFireEvent(int result) {
     if (result == JFileChooser.APPROVE_OPTION) {
       onFileChoosed.fire(
-        getSelectedFile()
+        new FileChoosedEvent(this, new JSheetFile(getSelectedFile()))
       );
     }
   }

@@ -19,12 +19,14 @@ public class FileStorageService extends StorageService {
 
       if (raw instanceof SerializableCell[]) {
         onWorksheetLoaded.fire(
-          new WorksheetLoadedEvent(file, (SerializableCell[])raw)
+          new WorksheetLoadedEvent(this, file, (SerializableCell[])raw)
         );
       }
     }
     catch (IOException | ClassNotFoundException e) {
-      onException.fire(e);
+      onException.fire(
+        new StorageExceptionEvent(this, e)
+      );
     }
   }
 
@@ -36,11 +38,13 @@ public class FileStorageService extends StorageService {
     ) {
       objOut.writeObject(cells);
       onWorksheetSaved.fire(
-        new WorksheetSavedEvent(file)
+        new WorksheetSavedEvent(this, file)
       );
     }
     catch (IOException e) {
-      onException.fire(e);
+      onException.fire(
+        new StorageExceptionEvent(this, e)
+      );
     }
   }
 }
