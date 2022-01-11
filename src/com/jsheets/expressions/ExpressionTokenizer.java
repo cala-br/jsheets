@@ -1,6 +1,7 @@
 package com.jsheets.expressions;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.jsheets.util.StringTokenizer;
 
@@ -11,7 +12,7 @@ public class ExpressionTokenizer {
       Operator
         .getAllByLargestPossibleSymbol()
         .map(o -> o.getSymbol())
-        .toList()
+        .collect(Collectors.toList())
     );
   }
 }

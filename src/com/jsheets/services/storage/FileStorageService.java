@@ -17,9 +17,9 @@ public class FileStorageService extends StorageService {
     ) {
       final var raw = objIn.readObject();
 
-      if (raw instanceof SerializableCell[] cells) {
+      if (raw instanceof SerializableCell[]) {
         onWorksheetLoaded.fire(
-          new WorksheetLoadedEvent(file, cells)
+          new WorksheetLoadedEvent(file, (SerializableCell[])raw)
         );
       }
     }
