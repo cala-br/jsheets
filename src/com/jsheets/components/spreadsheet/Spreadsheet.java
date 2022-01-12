@@ -96,10 +96,6 @@ public class Spreadsheet extends JTabbedPane {
 
     super.remove(index);
 
-    worksheet.onCellEdited.subscribe(this::setEdited);
-    worksheetManager.unregister(worksheet);
-    componentsMap.remove(worksheet);
-
     addNewWorksheetIfNoneRemain();
   }
 
