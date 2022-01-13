@@ -72,6 +72,7 @@ public class Spreadsheet extends JTabbedPane {
     worksheet.onCellEdited.subscribe(this::setEdited);
 
     addTab(title, wrappedSheet);
+    setSelectedComponent(wrappedSheet);
     refreshTabs();
   }
 
