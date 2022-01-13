@@ -15,16 +15,25 @@ public class JSheets {
       .onException
       .subscribe(JSheets::handleStorageException);
 
-    Runtime
-      .getRuntime()
-      .addShutdownHook(new Thread(JSheets::cleanup));
+    setupShutdownHooks();
 
     final var mainFrame = new MainFrame();
     mainFrame.setVisible(true);
 
     setupAutosave();
+    ServiceRepository
+      .sessionService
+      .tryLoadLastSession();
   }
 
+
+  private static void setupShutdownHooks() {
+    final var runtime = Runtime.getRuntime();
+    runtime.addShutdownHook(new Thread(JSheets::cleanup));
+    runtime.addShutdownHook(
+      new Thread(ServiceRepository.sessionService::saveCurrentSession)
+    );
+  }
 
   private static void handleStorageException(StorageExceptionEvent e) {
     ErrorDialog.show(e.exception);
@@ -42,9 +51,8 @@ public class JSheets {
     final var threeMinutes = 3 * 60 * 1000;
     final var saveTimer = new Timer(threeMinutes, e -> {
       ServiceRepository
-        .worksheetManager
-        .getAll()
-        .forEach(ServiceRepository.storageService::saveWorksheet);
+        .sessionService
+        .saveCurrentSession();
     });
 
     saveTimer.start();

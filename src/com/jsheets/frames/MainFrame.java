@@ -17,9 +17,12 @@ public class MainFrame extends JFrame {
   private final ContextualActions actions = new ContextualActions();
   private final Spreadsheet spreadsheet = new Spreadsheet();
 
+  private boolean alreadyPacked = false;
+
   public MainFrame() {
     super();
 
+    setSize(480, 320);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setLayout(new BorderLayout());
     setJMenuBar(new TopBar());
@@ -27,18 +30,27 @@ public class MainFrame extends JFrame {
     add(actions, BorderLayout.NORTH);
     add(spreadsheet, BorderLayout.CENTER);
 
-    spreadsheet.add(
-      addWorksheetHandlers(
-        new Worksheet()
-      )
-    );
+    maybeAddEmptyWorksheet();
 
     ServiceRepository
       .storageService
       .onWorksheetLoaded
       .subscribe(this::onWorksheetLoaded);
+  }
 
-    pack();
+
+  private void maybeAddEmptyWorksheet() {
+    final var anyExisting = ServiceRepository
+      .sessionService
+      .anyInLastSession();
+
+    if (!anyExisting) {
+      spreadsheet.add(
+        addWorksheetHandlers(new Worksheet())
+      );
+
+      maybePack();
+    }
   }
 
 
@@ -52,6 +64,7 @@ public class MainFrame extends JFrame {
     );
 
     spreadsheet.add(worksheet);
+    maybePack();
   }
 
   private boolean isAlreadyOpen(JSheetFile file) {
@@ -76,6 +89,13 @@ public class MainFrame extends JFrame {
     actions.setExpression(e);
   }
 
+
+  private void maybePack() {
+    if (!alreadyPacked) {
+      pack();
+      alreadyPacked = true;
+    }
+  }
 
   @Override
   public void removeNotify() {
