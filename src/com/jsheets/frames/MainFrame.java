@@ -17,6 +17,8 @@ public class MainFrame extends JFrame {
   private final ContextualActions actions = new ContextualActions();
   private final Spreadsheet spreadsheet = new Spreadsheet();
 
+  private boolean alreadyPacked = false;
+
   public MainFrame() {
     super();
 
@@ -33,8 +35,6 @@ public class MainFrame extends JFrame {
       .storageService
       .onWorksheetLoaded
       .subscribe(this::onWorksheetLoaded);
-
-    pack();
   }
 
 
@@ -47,6 +47,8 @@ public class MainFrame extends JFrame {
       spreadsheet.add(
         addWorksheetHandlers(new Worksheet())
       );
+
+      maybePack();
     }
   }
 
@@ -61,6 +63,7 @@ public class MainFrame extends JFrame {
     );
 
     spreadsheet.add(worksheet);
+    maybePack();
   }
 
   private boolean isAlreadyOpen(JSheetFile file) {
@@ -85,6 +88,13 @@ public class MainFrame extends JFrame {
     actions.setExpression(e);
   }
 
+
+  private void maybePack() {
+    if (!alreadyPacked) {
+      pack();
+      alreadyPacked = true;
+    }
+  }
 
   @Override
   public void removeNotify() {
