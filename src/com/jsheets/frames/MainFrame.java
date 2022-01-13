@@ -27,11 +27,7 @@ public class MainFrame extends JFrame {
     add(actions, BorderLayout.NORTH);
     add(spreadsheet, BorderLayout.CENTER);
 
-    spreadsheet.add(
-      addWorksheetHandlers(
-        new Worksheet()
-      )
-    );
+    maybeAddEmptyWorksheet();
 
     ServiceRepository
       .storageService
@@ -39,6 +35,19 @@ public class MainFrame extends JFrame {
       .subscribe(this::onWorksheetLoaded);
 
     pack();
+  }
+
+
+  private void maybeAddEmptyWorksheet() {
+    final var anyExisting = ServiceRepository
+      .sessionService
+      .anyInLastSession();
+
+    if (!anyExisting) {
+      spreadsheet.add(
+        addWorksheetHandlers(new Worksheet())
+      );
+    }
   }
 
 

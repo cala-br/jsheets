@@ -13,9 +13,13 @@ import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
 
 public class SessionService {
-  private static final Path sessionPath = Path.of("./settings.txt");
+  private static final Path sessionPath = Path.of("./session.txt");
   private static final File sessionFile = sessionPath.toFile();
 
+
+  public boolean anyInLastSession() {
+    return readLastOpenedFiles().count() > 0;
+  }
 
   public void tryLoadLastSession() {
     readLastOpenedFiles().forEach(f -> {
@@ -43,7 +47,8 @@ public class SessionService {
         .lines(sessionPath)
         .filter(l -> !l.isBlank())
         .map(l -> new File(l))
-        .map(f -> new JSheetFile(f));
+        .map(f -> new JSheetFile(f))
+        .filter(f -> f.exists());
     }
     catch (IOException e) {
       return Stream.empty();
