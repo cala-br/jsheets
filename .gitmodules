@@ -1,0 +1,3 @@
+[submodule "lib/jfreechart"]
+	path = lib/jfreechart
+	url = https://github.com/jfree/jfreechart.git
