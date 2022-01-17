@@ -9,11 +9,11 @@ public abstract class BaseEvent<TAction> {
     return subscribers;
   }
 
-  public void subscribe(TAction consumer) {
+  public synchronized void subscribe(TAction consumer) {
     subscribers.add(consumer);
   }
 
-  public void unsubscribe(TAction consumer) {
+  public synchronized void unsubscribe(TAction consumer) {
     subscribers.remove(consumer);
   }
 }
