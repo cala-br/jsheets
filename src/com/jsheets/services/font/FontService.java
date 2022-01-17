@@ -13,7 +13,7 @@ public class FontService {
     return segoeMdl2Assets;
   }
 
-  public boolean tryLoadFonts() {
+  public synchronized boolean tryLoadFonts() {
     try {
       segoeMdl2Assets = loadTTF("assets/mdl2-icons.ttf", 12f);
       final var ge =
