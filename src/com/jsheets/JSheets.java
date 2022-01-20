@@ -1,11 +1,10 @@
 package com.jsheets;
 
-import javax.swing.Timer;
-
 import com.jsheets.components.dialogs.ErrorDialog;
 import com.jsheets.frames.MainFrame;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.StorageExceptionEvent;
+import com.jsheets.util.AutoSaveTimer;
 
 public class JSheets {
   public static void main(String[] args) {
@@ -48,13 +47,8 @@ public class JSheets {
   }
 
   private static void setupAutosave() {
-    final var threeMinutes = 3 * 60 * 1000;
-    final var saveTimer = new Timer(threeMinutes, e -> {
-      ServiceRepository
-        .sessionService
-        .saveCurrentSession();
-    });
-
-    saveTimer.start();
+    AutoSaveTimer
+      .create(AutoSaveTimer.oneMinute)
+      .start();
   }
 }
