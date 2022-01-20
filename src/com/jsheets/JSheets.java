@@ -34,10 +34,6 @@ public class JSheets {
     );
   }
 
-  private static void handleStorageException(StorageExceptionEvent e) {
-    ErrorDialog.show(e.exception);
-  }
-
 
   private static void cleanup() {
     ServiceRepository
@@ -45,6 +41,11 @@ public class JSheets {
       .onException
       .unsubscribe(JSheets::handleStorageException);
   }
+
+  private static void handleStorageException(StorageExceptionEvent e) {
+    ErrorDialog.show(e.exception);
+  }
+
 
   private static void setupAutosave() {
     AutoSaveTimer
