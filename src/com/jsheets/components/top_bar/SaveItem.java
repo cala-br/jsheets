@@ -8,6 +8,10 @@ import com.jsheets.components.icons.SaveIcon;
 import com.jsheets.components.worksheet.Worksheet;
 import com.jsheets.services.ServiceRepository;
 
+/**
+ * Saves the currently active worksheet when
+ * pressed.
+ */
 public class SaveItem extends JMenuItem {
   public SaveItem() {
     super();

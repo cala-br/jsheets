@@ -3,13 +3,17 @@ package com.jsheets.components.contextual_actions;
 import javax.swing.JTextField;
 
 import com.jsheets.components.misc.EnterKeyAdapter;
-import com.jsheets.events.CellSelectionEvent;
+import com.jsheets.events.CellSelectionEventArgs;
 import com.jsheets.events.EventArgs;
 import com.jsheets.services.ServiceRepository;
 
+/**
+ * Displays the expression relative to the currently selected
+ * {@link Cell} or cells, and allows to edit it.
+ */
 public class ExpressionField extends JTextField {
   private final EnterKeyAdapter keyAdapter = new EnterKeyAdapter();
-  private CellSelectionEvent currentEvent = null;
+  private CellSelectionEventArgs currentEvent = null;
 
   public ExpressionField() {
     super();
@@ -17,7 +21,12 @@ public class ExpressionField extends JTextField {
     keyAdapter.onEnterPressed.subscribe(this::onEnterPressed);
   }
 
-  public void setText(CellSelectionEvent e) {
+  /**
+   * Extrapolates the expression from the given
+   * event.
+   * @param e The event containing the selected cells.
+   */
+  public void setText(CellSelectionEventArgs e) {
     currentEvent = e;
 
     final var text = e.hasSingleCell

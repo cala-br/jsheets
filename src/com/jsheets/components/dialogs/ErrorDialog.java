@@ -7,7 +7,15 @@ import javax.swing.JOptionPane;
 
 import com.jsheets.exceptions.ParseException;
 
+/**
+ * A dialog that displays an error message based on
+ * a given exception.
+ */
 public class ErrorDialog {
+  /**
+   * Displays an error message from a given exception.
+   * @param exception The exception to display.
+   */
   public static void show(Exception exception) {
     JOptionPane.showMessageDialog(
       null, getExceptionMessage(exception), "Error", JOptionPane.ERROR_MESSAGE

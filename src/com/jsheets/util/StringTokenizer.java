@@ -5,7 +5,25 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Provides methods to split a given string into tokens,
+ * while keeping the tokens.
+ */
 public class StringTokenizer {
+  /**
+   * Splits the string while keeping the given tokens.
+   * <pre>
+   *final var str = "a+b*c";
+   *final var tokens = List.of("+", "*");
+   *final var result = StringTokenizer.splitKeepingTokens(str, tokens);
+   * 
+   * // result == ["a", "+", "b", "*", "c"]
+   * </pre>
+   * @param expression The expression to split.
+   * @param delimiters The tokens to use for the split.
+   * @return
+   *  A new {@code List} containing the tokens.
+   */
   public static List<String> splitKeepingTokens(
     String expression,
     List<String> delimiters
@@ -33,6 +51,20 @@ public class StringTokenizer {
       .collect(Collectors.toList());
   }
 
+  /**
+   * Splits the string while keeping the delimiter
+   * <pre>
+   *final var str = "a+b+c";
+   *final var token = "+";
+   *final var result = StringTokenizer.splitKeepingToken(str, token);
+   *
+   * // result == ["a", "+", "b", "+", "c"]
+   * </pre>
+   * @param expression The expression to split.
+   * @param token The token to use for the split.
+   * @retun
+   * A new {@code List} containing the split string.
+   */
   public static List<String> splitKeepingToken(String expression, String token) {
     final var keepDelimiter = "((?<=%1$s)|(?=%1$s))";
     final var result = expression.split(

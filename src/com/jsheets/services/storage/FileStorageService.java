@@ -7,7 +7,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import com.jsheets.cells.SerializableCell;
+import com.jsheets.events.StorageExceptionEventArgs;
+import com.jsheets.events.WorksheetLoadedEventArgs;
+import com.jsheets.events.WorksheetSavedEventArgs;
 
+/**
+ * Storage service implementation that dumps and loads the
+ * {@link SerializableCell}s with java's default object serialization.
+ */
 public class FileStorageService extends StorageService {
   @Override
   public void loadWorksheet(JSheetFile file) {
@@ -19,13 +26,13 @@ public class FileStorageService extends StorageService {
 
       if (raw instanceof SerializableCell[]) {
         onWorksheetLoaded.fire(
-          new WorksheetLoadedEvent(this, file, (SerializableCell[])raw)
+          new WorksheetLoadedEventArgs(this, file, (SerializableCell[])raw)
         );
       }
     }
     catch (IOException | ClassNotFoundException e) {
       onException.fire(
-        new StorageExceptionEvent(this, e)
+        new StorageExceptionEventArgs(this, e)
       );
     }
   }
@@ -38,12 +45,12 @@ public class FileStorageService extends StorageService {
     ) {
       objOut.writeObject(cells);
       onWorksheetSaved.fire(
-        new WorksheetSavedEvent(this, file)
+        new WorksheetSavedEventArgs(this, file)
       );
     }
     catch (IOException e) {
       onException.fire(
-        new StorageExceptionEvent(this, e)
+        new StorageExceptionEventArgs(this, e)
       );
     }
   }

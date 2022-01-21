@@ -8,22 +8,34 @@ import com.jsheets.cells.CellParams;
 import com.jsheets.cells.CellView;
 import com.jsheets.cells.ErrorCell;
 import com.jsheets.cells.ExpressionCell;
-import com.jsheets.events.CellUpdatedEvent;
+import com.jsheets.events.CellUpdatedEventArgs;
 import com.jsheets.events.Event;
 import com.jsheets.util.StringUtil;
 
+/**
+ * Provides a 26 x 100 matrix of {@link Cell}s that
+ * are automatically computed when updated.
+ */
 public class WorkSheetModel extends AbstractTableModel {
   private final static int columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length();
   private final static int rows = 100;
 
-  public final Event<CellUpdatedEvent> onCellUpdated = new Event<>();
+  public final Event<CellUpdatedEventArgs> onCellUpdated = new Event<>();
   private final Cell<?>[][] cells = new Cell<?>[rows][columns];
 
+  /**
+   * @return
+   *  A view of the underlying matrix.
+   */
   public CellView getView() {
     return new CellView(cells);
   }
 
 
+  /**
+   * @return
+   *  The {@code Cell} at the given position
+   */
   public Cell<?> getCellAt(int row, int col) {
     var cell = cells[row][col];
     if (cell == null) {
@@ -54,6 +66,10 @@ public class WorkSheetModel extends AbstractTableModel {
     return getCellAt(row, col).getValue();
   }
 
+  /**
+   * Sets the value at the given position, updating the
+   * existing {@link ExpressionCell}s to reflect the change.
+   */
   @Override
   public void setValueAt(Object value, int row, int col) {
     final var cell = createCellAt(value, row, col);
@@ -86,7 +102,7 @@ public class WorkSheetModel extends AbstractTableModel {
     cells[row][col] = cell;
 
     onCellUpdated.fire(
-      new CellUpdatedEvent(this, cell)
+      new CellUpdatedEventArgs(this, cell)
     );
 
     fireTableCellUpdated(row, col);

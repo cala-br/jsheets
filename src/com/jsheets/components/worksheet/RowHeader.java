@@ -5,7 +5,17 @@ import javax.swing.JTable;
 
 import com.jsheets.model.RowHeaderModel;
 
+/**
+ * An header that can wrap a {@link TableScrollPane}, rendering
+ * the row number on its left.
+ */
 public class RowHeader extends JList<String> {
+  /**
+   * Creates a new {@code TableScrollPane} that wraps
+   * around the given pane.
+   * @param pane The pane to wrap
+   * @return The given pane, wrapped.
+   */
   public static TableScrollPane wrap(TableScrollPane pane) {
     new RowHeader(pane, pane.getTable());
     return pane;

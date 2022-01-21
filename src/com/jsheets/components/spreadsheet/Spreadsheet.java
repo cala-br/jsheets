@@ -13,15 +13,24 @@ import com.jsheets.components.dialogs.SaveDialogResult;
 import com.jsheets.components.worksheet.RowHeader;
 import com.jsheets.components.worksheet.TableScrollPane;
 import com.jsheets.components.worksheet.Worksheet;
-import com.jsheets.events.CellEditedEvent;
+import com.jsheets.events.CellEditedEventArgs;
+import com.jsheets.events.WorksheetSavedEventArgs;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.WorksheetSavedEvent;
 import com.jsheets.services.worksheet_manager.WorksheetManagerService;
 
+/**
+ * Renders the currently opened worksheets, and allows
+ * to close them.
+ * It also handles their registration and unregistration
+ * to the {@link WorskheetManagerService}.
+ */
 public class Spreadsheet extends JTabbedPane {
   private final WorksheetManagerService worksheetManager = ServiceRepository.worksheetManager;
   private final Map<Worksheet, Component> componentsMap = new HashMap<>();
 
+  /**
+   * Creates a new {@code Spreadsheet}.
+   */
   public Spreadsheet() {
     super();
     addChangeListener(this::onTabChanged);
@@ -39,7 +48,7 @@ public class Spreadsheet extends JTabbedPane {
   }
 
 
-  private void onWorksheetSaved(WorksheetSavedEvent e) {
+  private void onWorksheetSaved(WorksheetSavedEventArgs e) {
     final var saved = worksheetManager
       .getAll()
       .filter(w -> e.file.compareTo(w.getFile()) == 0)
@@ -54,6 +63,10 @@ public class Spreadsheet extends JTabbedPane {
   }
 
 
+  /**
+   * Add a worksheet to this spreadsheet.
+   * @param worksheet The worksheet to add.
+   */
   public void add(Worksheet worksheet) {
     final var file = worksheet.getFile();
     final var title = file == null
@@ -85,6 +98,12 @@ public class Spreadsheet extends JTabbedPane {
   }
 
 
+  /**
+   * Removes, saves and unregisters the worksheet at the
+   * given index.
+   * @param index
+   *  The index of the worksheet that has to be removed.
+   */
   @Override
   public void remove(int index) {
     final var worksheet =
@@ -104,7 +123,7 @@ public class Spreadsheet extends JTabbedPane {
     addNewWorksheetIfNoneRemain();
   }
 
-  private void setEdited(CellEditedEvent e) {
+  private void setEdited(CellEditedEventArgs e) {
     final var c = componentsMap.get(e.sender);
     final var i = indexOfComponent(c);
     final var t = getTitleAt(i);
@@ -116,7 +135,7 @@ public class Spreadsheet extends JTabbedPane {
 
   private SaveDialogResult askToSaveBeforeRemoving(Worksheet worksheet) {
     try (final var saver = new JSheetFileSaver(worksheet)) {
-      return saver.trySaveWithoutConfirmation();
+      return saver.trySaveSilentlyIfNotEdited();
     }
   }
 

@@ -12,15 +12,26 @@ import java.util.stream.Stream;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
 
+/**
+ * Handles the {@code session.txt} file, taking care of loading
+ * and saving the current or last session into it.
+ */
 public class SessionService {
   private static final Path sessionPath = Path.of("./session.txt");
   private static final File sessionFile = sessionPath.toFile();
 
-
+  /**
+   * Tells wether the last session contained any
+   * files.
+   */
   public boolean anyInLastSession() {
     return readLastOpenedFiles().count() > 0;
   }
 
+  /**
+   * Tries to load the last session from the
+   * {@code session.txt} file.
+   */
   public void tryLoadLastSession() {
     readLastOpenedFiles().forEach(f -> {
       ServiceRepository
@@ -29,6 +40,10 @@ public class SessionService {
     });
   }
 
+  /**
+   * Saves the currently displayed worksheets and stores
+   * their paths into the {@code session.txt} file.
+   */
   public void saveCurrentSession() {
     try (final var out = new PrintStream(sessionFile);) {
       saveAll();

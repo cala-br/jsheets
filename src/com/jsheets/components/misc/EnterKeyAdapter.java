@@ -6,7 +6,14 @@ import java.awt.event.KeyEvent;
 import com.jsheets.events.ActionEvent;
 import com.jsheets.events.EventArgs;
 
+/**
+ * A {@link KeyAdapter} that notifies when only the enter
+ * key is pressed.
+ */
 public class EnterKeyAdapter extends KeyAdapter {
+  /**
+   * Fired when the enter key is pressed.
+   */
   public final ActionEvent<EnterKeyAdapter> onEnterPressed = new ActionEvent<>();
 
   public EnterKeyAdapter() {

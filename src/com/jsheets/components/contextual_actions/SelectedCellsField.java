@@ -7,6 +7,10 @@ import javax.swing.JTextField;
 
 import com.jsheets.cells.CellPosition;
 
+/**
+ * A field that displays the position of the
+ * cells selected inside the {@link Worksheet}.
+ */
 public class SelectedCellsField extends JTextField {
   public SelectedCellsField() {
     super();
@@ -22,6 +26,11 @@ public class SelectedCellsField extends JTextField {
   }
 
 
+  /**
+   * Displays the span of selected cells.
+   * @param rows The rows that have been selected.
+   * @param cols The columns that have been selected.
+   */
   public void updateText(int[] rows, int[] cols) {
     final var firstCell = new CellPosition(rows[0], cols[0]);
     final var lastCell = new CellPosition(

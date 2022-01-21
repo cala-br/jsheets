@@ -1,7 +1,5 @@
 package com.jsheets.components.worksheet;
 
-import java.io.File;
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -9,59 +7,92 @@ import javax.swing.event.ListSelectionEvent;
 import com.jsheets.cells.CellSpan;
 import com.jsheets.cells.CellView;
 import com.jsheets.cells.SerializableCell;
-import com.jsheets.events.CellEditedEvent;
-import com.jsheets.events.CellSelectionEvent;
-import com.jsheets.events.CellUpdatedEvent;
+import com.jsheets.events.CellEditedEventArgs;
+import com.jsheets.events.CellSelectionEventArgs;
+import com.jsheets.events.CellUpdatedEventArgs;
 import com.jsheets.events.Event;
+import com.jsheets.events.WorksheetSavedEventArgs;
 import com.jsheets.model.WorkSheetModel;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
-import com.jsheets.services.storage.WorksheetSavedEvent;
 
+/**
+ * A table that contains {@link Cell}s that can be used
+ * for numeric computations.
+ */
 public class Worksheet extends JTable {
-  public final Event<CellSelectionEvent> onCellSelected = new Event<>();
-  public final Event<CellEditedEvent> onCellEdited = new Event<>();
+  public final Event<CellSelectionEventArgs> onCellSelected = new Event<>();
+  public final Event<CellEditedEventArgs> onCellEdited = new Event<>();
   private final WorkSheetModel model;
 
   private JSheetFile file = null;
   private boolean edited = false;
+
+  /**
+   * Tells wether this table has been edited or not.
+   * @return
+   *  {@code true} if the table has been edited, {@code false} otherwise.
+   */
   public boolean hasBeenEdited() {
     return edited;
   }
 
+  /**
+   * Tells wether the file linked to this cell is temporary
+   * or null.
+   * @return
+   *  {@code true} if the table has been saved on a file created
+   *  by the user, {@code false} otherwise.
+   */
   public boolean hasBeenSaved() {
     return file != null && !file.isTemporary();
   }
 
+  /**
+   * @return
+   *  The file where this sheet has been saved on.
+   */
   public JSheetFile getFile() {
     return file;
   }
 
+  /**
+   * Sets the file where this table has or will be saved on.
+   */
   public void setFile(JSheetFile file) {
     this.file = file;
   }
 
+  /**
+   * @return
+   *  A view on the underlying {@link Cell} matrix.
+   */
   public CellView getCellView() {
     return model.getView();
   }
 
 
+  /**
+   * Creates a new Worksheet with the given file, possibly loading
+   * the provided cells.
+   * @param file The file to link to the sheet.
+   * @param cells A possible collection of cells to load.
+   */
   public Worksheet(JSheetFile file, SerializableCell ...cells) {
     this(cells);
     setFile(file);
   }
 
+  /**
+   * Creates a new Worksheet, possibly loading the given cells.
+   * @param cells
+   *  A possible collection of cells to load.
+   */
   public Worksheet(SerializableCell ...cells) {
     super(new WorkSheetModel());
-
-    try {
-      this.file = new JSheetFile(
-        File.createTempFile("tmp-", ".new")
-      );
-    }
-    catch (Exception e) {
-      this.file = null;
-    }
+    setFile(
+      JSheetFile.maybeCreateTemporary()
+    );
 
     this.model = (WorkSheetModel)getModel();
     loadSerializedCells(cells);
@@ -85,10 +116,10 @@ public class Worksheet extends JTable {
     }
   }
 
-  private void onCellUpdated(CellUpdatedEvent e) {
+  private void onCellUpdated(CellUpdatedEventArgs e) {
     edited = true;
     onCellEdited.fire(
-      new CellEditedEvent(this, e.cell)
+      new CellEditedEventArgs(this, e.cell)
     );
   }
 
@@ -113,7 +144,7 @@ public class Worksheet extends JTable {
     }
 
     onCellSelected.fire(
-      new CellSelectionEvent(this, data, rows, cols)
+      new CellSelectionEventArgs(this, data, rows, cols)
     );
   }
 
@@ -131,7 +162,7 @@ public class Worksheet extends JTable {
   }
 
 
-  private void onSave(WorksheetSavedEvent e) {
+  private void onSave(WorksheetSavedEventArgs e) {
     if (e.file.compareTo(file) == 0) {
       edited = false;
     }

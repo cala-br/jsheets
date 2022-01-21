@@ -13,6 +13,12 @@ import javax.swing.JLabel;
 
 import com.jsheets.services.ServiceRepository;
 
+/**
+ * Renders an icon in the "segoe mdl2 assets" font.
+ * 
+ * It can also be used as a label, as the icon that is
+ * rendered is essentially text.
+ */
 public abstract class FontIcon extends JLabel implements Icon {
   protected FontIcon(String icon) {
     super();
@@ -30,27 +36,27 @@ public abstract class FontIcon extends JLabel implements Icon {
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y) {
     final var g2d = (Graphics2D) g.create();
-		final var map = (Map<?, ?>) Toolkit
+    final var map = (Map<?, ?>) Toolkit
       .getDefaultToolkit()
       .getDesktopProperty("awt.font.desktophints");
 
-		if (map != null) {
-		  g2d.addRenderingHints(map);
-		}
-		else {
-			g2d.setRenderingHint(
+    if (map != null) {
+      g2d.addRenderingHints(map);
+    }
+    else {
+      g2d.setRenderingHint(
         RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+        RenderingHints.VALUE_TEXT_ANTIALIAS_ON
       );
     }
 
-		g2d.setFont(getFont());
-		g2d.setColor(getForeground());
-		final var fm = g2d.getFontMetrics();
+    g2d.setFont(getFont());
+    g2d.setColor(getForeground());
+    final var fm = g2d.getFontMetrics();
 
-		g2d.translate(x, y +	fm.getAscent());
-		g2d.drawString(getText(), 0, 2);
-		g2d.dispose();
+    g2d.translate(x, y +	fm.getAscent());
+    g2d.drawString(getText(), 0, 2);
+    g2d.dispose();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.jsheets.events;
 
-public class ActionEvent<TSender> extends Event<EventArgs<TSender>> {
-  
-}
+/**
+ * A fireabl event that carries only its {@code sender}.
+ */
+public class ActionEvent<TSender> extends Event<EventArgs<TSender>> {}
