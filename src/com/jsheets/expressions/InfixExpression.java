@@ -4,17 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Represents an expression that has the operators
+ * between the operands.
+ */
 public class InfixExpression {
   private final ArrayList<String> result = new ArrayList<>();
   private final Stack<String> memo = new Stack<>();
   private final List<String> infix;
 
+
+  /**
+   * Converts an infix expression to a postfix expression.
+   * A postfix expression is an expression that has the operator
+   * after the operands.
+   * @param infix The infix expression to convert. (E.g. {@code 1 + 2})
+   * @return
+   *  The resulting postfix expression, with operators and
+   *  operands as elements of a list. (E.g. {@code ["1", "2", "+"]})
+   */
+  public static List<String> toPostfix(String infix) {
+    final var tokens = ExpressionTokenizer.tokenize(infix);
+    final var expr = new InfixExpression(tokens);
+    return expr.toPostfix();
+  }
+
+
   private InfixExpression(List<String> infix) {
     this.infix = infix;
   }
 
-
-  public List<String> toPostfix() {
+  private List<String> toPostfix() {
     for (final var term : infix) {
       Operator
         .fromSymbol(term)
@@ -73,11 +93,5 @@ public class InfixExpression {
     while (!memo.isEmpty()) {
       result.add(memo.pop());
     }
-  }
-
-  public static List<String> toPostfix(String infix) {
-    final var tokens = ExpressionTokenizer.tokenize(infix);
-    final var expr = new InfixExpression(tokens);
-    return expr.toPostfix();
   }
 }

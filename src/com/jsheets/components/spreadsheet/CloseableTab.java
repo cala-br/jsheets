@@ -8,6 +8,10 @@ import javax.swing.JPanel;
 
 import com.jsheets.components.icons.CloseIcon;
 
+/**
+ * A tab that can be closed.
+ * To render inside a {@link JTabbedPane}
+ */
 public class CloseableTab extends JPanel {
   private final TabButton closeButton = new TabButton(new CloseIcon());
   private final TabTitle title;

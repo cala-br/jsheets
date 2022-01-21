@@ -3,10 +3,19 @@ package com.jsheets.components.spreadsheet;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+/**
+ * The text to display inside a {@link CloseableTab}.
+ */
 public class TabTitle extends JLabel {
   private final Spreadsheet spreadsheet;
   private final CloseableTab tab;
 
+  /**
+   * Creates a new {@code TabTitle}.
+   * It synchronizes with the existing title.
+   * @param spreadsheet The sheet that will contain this title's tab.
+   * @param tab The tab that will contain this title.
+   */
   public TabTitle(Spreadsheet spreadsheet, CloseableTab tab) {
     super();
     this.spreadsheet = spreadsheet;
@@ -17,6 +26,7 @@ public class TabTitle extends JLabel {
     );
   }
 
+  @Override
   public String getText() {
     if (spreadsheet == null)
       return null;

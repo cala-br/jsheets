@@ -4,9 +4,13 @@ import javax.swing.JMenuItem;
 
 import com.jsheets.components.dialogs.JSheetFileChooser;
 import com.jsheets.components.icons.OpenFileIcon;
-import com.jsheets.events.FileChoosedEvent;
+import com.jsheets.events.FileChoosedEventArgs;
 import com.jsheets.services.ServiceRepository;
 
+/**
+ * Prompts to open an existing worksheet when
+ * pressed.
+ */
 public class OpenFileItem extends JMenuItem {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
 
@@ -21,7 +25,7 @@ public class OpenFileItem extends JMenuItem {
       .subscribe(this::loadWorksheet);
   }
 
-  private void loadWorksheet(FileChoosedEvent e) {
+  private void loadWorksheet(FileChoosedEventArgs e) {
     ServiceRepository
       .storageService
       .loadWorksheet(e.file);

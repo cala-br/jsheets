@@ -20,6 +20,10 @@ import com.jsheets.expressions.operations.Subtract;
 import com.jsheets.expressions.types.BooleanExpression;
 import com.jsheets.expressions.types.NumericExpression;
 
+/**
+ * Represents an operation between two operands
+ * and an operator.
+ */
 public class Operation {
   private final Stack<Expression<?, ?>> memo;
   private final Operator operator;
@@ -29,7 +33,15 @@ public class Operation {
     this.operator = operator;
   }
 
-  public static Expression<?, ?> parse(Operator operator, Stack<Expression<?, ?>> memo) {
+  /**
+   * Creates a new expression representing the operation for
+   * the given operator.
+   * @param operator The operator of this operation.
+   * @param memo The stack of operands.
+   * @return A new expression representing the operation.
+   * @throws ParseException If the operation cannot be created.
+   */
+  public static Expression<?, ?> parse(Operator operator, Stack<Expression<?, ?>> memo) throws ParseException {
     return new Operation(operator, memo).parse();
   }
 

@@ -8,12 +8,18 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jsheets.events.Event;
-import com.jsheets.events.FileChoosedEvent;
+import com.jsheets.events.FileChoosedEventArgs;
 import com.jsheets.services.storage.JSheetFile;
 
+/**
+ * A file chooser that filters for {@link JSheetFile}s.
+ */
 public class JSheetFileChooser extends JFileChooser {
-  public final Event<FileChoosedEvent> onFileChoosed = new Event<>();
+  public final Event<FileChoosedEventArgs> onFileChoosed = new Event<>();
 
+  /**
+   * Creates a new {@code JSheetFileChooser}.
+   */
   public JSheetFileChooser() {
     super();
     setAcceptAllFileFilterUsed(false);
@@ -43,7 +49,7 @@ public class JSheetFileChooser extends JFileChooser {
   private void maybeFireEvent(int result) {
     if (result == JFileChooser.APPROVE_OPTION) {
       onFileChoosed.fire(
-        new FileChoosedEvent(this, new JSheetFile(getSelectedFile()))
+        new FileChoosedEventArgs(this, new JSheetFile(getSelectedFile()))
       );
     }
   }

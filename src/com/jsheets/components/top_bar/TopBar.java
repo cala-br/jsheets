@@ -8,6 +8,9 @@ import com.jsheets.components.icons.CopyIcon;
 import com.jsheets.components.icons.CutIcon;
 import com.jsheets.components.icons.PasteIcon;
 
+/**
+ * A menu bar that displays open and save actions.
+ */
 public class TopBar extends JMenuBar {
   public TopBar() {
     super();

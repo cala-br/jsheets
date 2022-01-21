@@ -2,6 +2,11 @@ package com.jsheets.cells;
 
 import com.jsheets.exceptions.ParseException;
 
+/**
+ * A cell representing a number.
+ * <br>
+ * E.g. {@code 12.99}
+ */
 public class NumericCell extends Cell<Number> {
   public NumericCell(CellParams params) {
     super(params);

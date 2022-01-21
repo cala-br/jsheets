@@ -1,12 +1,18 @@
 package com.jsheets;
 
 import com.jsheets.components.dialogs.ErrorDialog;
+import com.jsheets.events.StorageExceptionEventArgs;
 import com.jsheets.frames.MainFrame;
 import com.jsheets.services.ServiceRepository;
-import com.jsheets.services.storage.StorageExceptionEvent;
 import com.jsheets.util.AutoSaveTimer;
 
 public class JSheets {
+  /**
+   * Entry point for the application
+   * 
+   * Takes care of setting up the services and displaying the
+   * main frame
+   */
   public static void main(String[] args) {
     ServiceRepository.fontService.tryLoadFonts();
     ServiceRepository
@@ -34,10 +40,6 @@ public class JSheets {
     );
   }
 
-  private static void handleStorageException(StorageExceptionEvent e) {
-    ErrorDialog.show(e.exception);
-  }
-
 
   private static void cleanup() {
     ServiceRepository
@@ -45,6 +47,11 @@ public class JSheets {
       .onException
       .unsubscribe(JSheets::handleStorageException);
   }
+
+  private static void handleStorageException(StorageExceptionEventArgs e) {
+    ErrorDialog.show(e.exception);
+  }
+
 
   private static void setupAutosave() {
     AutoSaveTimer

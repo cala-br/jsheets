@@ -6,6 +6,9 @@ import java.util.Stack;
 import com.jsheets.cells.CellView;
 import com.jsheets.exceptions.ParseException;
 
+/**
+ * Represents a tree of expressions.
+ */
 public class ExpressionTree {
   private final Stack<Expression<?, ?>> memo = new Stack<>();
   private final List<String> postfix;
@@ -16,6 +19,14 @@ public class ExpressionTree {
     this.postfix = InfixExpression.toPostfix(expression);
   }
 
+  /**
+   * Parses a possible expression string into an {@link Expression}.
+   * @param expression An expression string. (E.g. {@code "1 + 2"})
+   * @param cells The cells that could appear as operands.
+   * @return A new expression ready to be computed.
+   * @throws ParseException
+   *  If the expression string is invalid.
+   */
   public static Expression<?, ?> parse(String expression, CellView cells) throws ParseException {
     return new ExpressionTree(expression, cells).parse();
   }

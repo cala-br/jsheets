@@ -5,19 +5,38 @@ import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+/**
+ * A scroll pane that renders the header of {@link JTable}s
+ */
 public class TableScrollPane extends JScrollPane {
   private final int rowsToShow;
   private final JTable table;
 
+  /**
+   * @return
+   *  The table wrapped within this pane.
+   */
   public JTable getTable() {
     return table;
   }
 
 
+  /**
+   * Create a new {@code TableScrollPane} that renders the
+   * given table, showing all its rows.
+   * @param table
+   *  The table to render.
+   */
   public TableScrollPane(JTable table) {
     this(table, table.getRowCount());
   }
 
+  /**
+   * Create a new {@code TableScrollPane} that renders the
+   * given table with the provided number of rows.
+   * @param table The table to render.
+   * @param rowsToShow The rows to show.
+   */
   public TableScrollPane(JTable table, int rowsToShow) {
     super(table);
     this.table = table;

@@ -9,8 +9,19 @@ import com.jsheets.expressions.operands.NumericConstant;
 import com.jsheets.util.BooleanUtil;
 import com.jsheets.util.NumberUtil;
 
+/**
+ * Represents an operand.
+ */
 public class Operand {
-  public static Expression<?, ?> parse(String token, CellView cells) {
+  /**
+   * Converts an operand to an expression.
+   * @param token The possible operand.
+   * @param cells A view of the cell matrix. (For cell operands)
+   * @return A new expression representing this operand.
+   * @throws ParseException
+   *  If the given token is not an operand.
+   */
+  public static Expression<?, ?> parse(String token, CellView cells) throws ParseException {
     if (NumberUtil.isNumber(token)) {
       return NumericConstant.parse(token);
     }

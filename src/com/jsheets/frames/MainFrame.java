@@ -8,10 +8,10 @@ import com.jsheets.components.contextual_actions.ContextualActions;
 import com.jsheets.components.spreadsheet.Spreadsheet;
 import com.jsheets.components.top_bar.TopBar;
 import com.jsheets.components.worksheet.Worksheet;
-import com.jsheets.events.CellSelectionEvent;
+import com.jsheets.events.CellSelectionEventArgs;
+import com.jsheets.events.WorksheetLoadedEventArgs;
 import com.jsheets.services.ServiceRepository;
 import com.jsheets.services.storage.JSheetFile;
-import com.jsheets.services.storage.WorksheetLoadedEvent;
 
 public class MainFrame extends JFrame {
   private final ContextualActions actions = new ContextualActions();
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
   }
 
 
-  private void onWorksheetLoaded(WorksheetLoadedEvent e) {
+  private void onWorksheetLoaded(WorksheetLoadedEventArgs e) {
     if (isAlreadyOpen(e.file)) {
       return;
     }
@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
     return worksheet;
   }
 
-  private void onCellSelected(CellSelectionEvent e) {
+  private void onCellSelected(CellSelectionEventArgs e) {
     actions.setSelectedCell(e.rows, e.columns);
     actions.isExpressionEditable(e.hasSingleCell);
     actions.setExpression(e);

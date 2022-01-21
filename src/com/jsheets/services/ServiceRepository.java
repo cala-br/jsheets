@@ -6,6 +6,10 @@ import com.jsheets.services.storage.FileStorageService;
 import com.jsheets.services.storage.StorageService;
 import com.jsheets.services.worksheet_manager.WorksheetManagerService;
 
+/**
+ * Provides static access to singleton
+ * instances of the services
+ */
 public class ServiceRepository {
   public final static FontService fontService = new FontService();
   public final static SessionService sessionService = new SessionService();

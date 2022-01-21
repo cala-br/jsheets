@@ -1,15 +1,21 @@
 package com.jsheets.components.dialogs;
 
-import javax.swing.JOptionPane;
-
 import com.jsheets.components.worksheet.Worksheet;
-import com.jsheets.events.FileChoosedEvent;
+import com.jsheets.events.FileChoosedEventArgs;
 import com.jsheets.services.ServiceRepository;
 
+/**
+ * Saves a {@link Worksheet} into its linked
+ * {@link JSheetFile} interactively.
+ */
 public class JSheetFileSaver implements AutoCloseable {
   private final JSheetFileChooser chooser = new JSheetFileChooser();
   private final Worksheet worksheet;
 
+  /**
+   * Creates a new {@code JSheetFileSaver}.
+   * @param worksheet The worksheet that will be saved.
+   */
   public JSheetFileSaver(Worksheet worksheet) {
     this.worksheet = worksheet;
     if (worksheet.hasBeenSaved()) {
@@ -20,20 +26,29 @@ public class JSheetFileSaver implements AutoCloseable {
   }
 
 
-  public SaveDialogResult trySaveWithoutConfirmation() {
-    if (!worksheet.hasBeenEdited()) {
-      return SaveDialogResult.SAVED;
-    }
-
-    final var saveIfEdited = SaveIfEditedDialog.canSave();
-    if (saveIfEdited != JOptionPane.OK_OPTION) {
-      return SaveDialogResult.fromJOption(saveIfEdited);
+  /**
+   * Tries to save the sheet silently if it hasn't been
+   * edited.
+   * @return
+   *  The result of the operation.
+   */
+  public SaveDialogResult trySaveSilentlyIfNotEdited() {
+    final var saveIfEdited = SaveIfEditedDialog.canSave(worksheet);
+    if (saveIfEdited != SaveDialogResult.SAVED) {
+      return saveIfEdited;
     }
 
     return trySaveSilently();
   }
 
 
+  /**
+   * Saves the worksheet directly if is not
+   * stored on a temporary file, otherwise it
+   * asks the user for where to save it.
+   * @return
+   *  The result of the operation.
+   */
   public SaveDialogResult trySaveSilently() {
     if (!worksheet.hasBeenSaved()) {
       return saveWithConfirmation();
@@ -44,13 +59,19 @@ public class JSheetFileSaver implements AutoCloseable {
   }
 
 
+  /**
+   * Asks where to save the worksheet, and then saves it
+   * if the user chooses to do so.
+   * @return
+   *  The result of the operation.
+   */
   public SaveDialogResult saveWithConfirmation() {
     return SaveDialogResult.fromJChooserOption(
       chooser.showSaveDialog(null)
     );
   }
 
-  private void saveChoosedFile(FileChoosedEvent e) {
+  private void saveChoosedFile(FileChoosedEventArgs e) {
     if (!FileAlreadyExistsDialog.canSave(e.file)) {
       return;
     }

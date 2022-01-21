@@ -8,8 +8,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import com.jsheets.components.icons.FunctionIcon;
-import com.jsheets.events.CellSelectionEvent;
+import com.jsheets.events.CellSelectionEventArgs;
 
+/**
+ * An app bar containing elements that change based
+ * on the selected {@link Worskheet} cells.
+ */
 public class ContextualActions extends JPanel {
   private final SelectedCellsField selectedCell = new SelectedCellsField();
   private final ExpressionField expression = new ExpressionField();
@@ -27,14 +31,34 @@ public class ContextualActions extends JPanel {
     add(expression);
   }
 
+  /**
+   * Sets the span of selected cells.
+   * @param rows The selected rows.
+   * @param cols The selected columns.
+   */
   public void setSelectedCell(int[] rows, int[] cols) {
     selectedCell.updateText(rows, cols);
   }
 
-  public void setExpression(CellSelectionEvent e) {
+  /**
+   * Sets the expression to render inside the expression
+   * field.
+   * It changes based on how many cells have been selected.
+   * 
+   * @param e
+   *  The event to extrapolate the expression from.
+   */
+  public void setExpression(CellSelectionEventArgs e) {
     expression.setText(e);
   }
 
+  /**
+   * Tells wether the expression field should be editable
+   * or not.
+   * @param editable
+   *  {@code true} if the expression should be edited,
+   *  {@code false} otherwise.
+   */
   public void isExpressionEditable(boolean editable) {
     expression.setEditable(editable);
   }
