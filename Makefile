@@ -1,4 +1,4 @@
-JDK=17
+JDK=11
 
 build:
 	javac --release $(JDK) -d bin -sourcepath src src/com/jsheets/JSheets.java
@@ -6,5 +6,7 @@ build:
 docs:
 	javadoc -d docs @docfiles.txt
 
-run: build
+start:
 	java -cp "bin" com.jsheets.JSheets
+
+run: build start
